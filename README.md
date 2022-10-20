@@ -1,3 +1,3 @@
 # GS---PYMIG
 
-Baixar o arquivo oraociicus.dll e jogar na pasta do instant client.
+Baixar o instantclient_21_7 e jogar na raiz do diretório.
