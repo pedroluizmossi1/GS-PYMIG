@@ -3,6 +3,9 @@ import psycopg2
 import pandas as pd
 from tkinter import *
 from tkinter import ttk
+import sys
+import os
+import cx_Oracle
 
 # Connect to your postgres DB
 conn = psycopg2.connect(host='localhost', 
@@ -23,24 +26,36 @@ df = pd.DataFrame(records)
 print(df[0][0])
 
 
-import cx_Oracle
-
-def connect_oracle():
-        con = cx_Oracle.connect('gondola/tgo12m50k@10.0.120.238/OURO')
-
-        print(con.version)
-
-        len_sql = (len(records))
-        len_start = 0
-        while len_start < len_sql:
-
-            cur2 = con.cursor() 
-            myvar = df[0][len_start]
-            myvar2 = df[1][len_start]
-            cur2.callproc('p_import_unidade_medida', (myvar,myvar2)) 
-            len_start = len_start+1
-            cur2.close() 
-        con.commit()
-        con.close()
 
 
+
+try:
+    if sys.platform.startswith("darwin"):
+        lib_dir = os.path.join(os.environ.get("HOME"), "Downloads",
+                               "instantclient_19_8")
+        cx_Oracle.init_oracle_client(lib_dir=lib_dir)
+    elif sys.platform.startswith("win32"):
+        lib_dir = (r'instantclient_21_7')
+        cx_Oracle.init_oracle_client(lib_dir=lib_dir)
+except Exception as err:
+    print("Whoops!")
+    print(err)
+    sys.exit(1)
+
+con = cx_Oracle.connect('gondola/tgo12m50k@10.0.120.238/migs01')
+
+print(con.version)
+
+df1 = pd.read_sql('SELECT sysdate FROM dual', con=con) 
+
+print(df1)
+
+def ora_mod_select():
+    cur = con.cursor()
+    cur.arraysize = 100
+    cur.execute("SELECT sysdate FROM dual")                           
+    res = cur.fetchall()
+    cur.close()  
+    return(res)
+
+print(ora_mod_select())
