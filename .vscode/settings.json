@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 100,
+            "driver": "SQLite",
+            "name": "pymig",
+            "database": "${workspaceFolder:GS-PYMIG}/pymig.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

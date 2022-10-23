@@ -6,13 +6,21 @@ import psycopg2
 import pandas as pd
 from tkinter import *
 from tkinter import ttk
-
+import sqlite3
 import sys
 import os
 import configparser
 
+#import python files
+import templates.sistemas.logtec as logtec
+
 # name of folder where the html, css, js, image files are located
 eel.init('templates')
+
+
+#Conexao SQLITE3
+con_lite = sqlite3.connect("pymig.db")
+cur_lite = con_lite.cursor()
 
 
 
@@ -63,29 +71,13 @@ def connect_oracle(ora_login, ora_password, ora_host, ora_port, ora_service):
     return ora_conectado
 
 # Abertura da Conexao POSTGRES
-
-#Connect to your postgres DB
 @eel.expose
 def connect_postgres(host,database,port,user,password):
-    
-    global con_pos
-    con_pos = psycopg2.connect(host=host,
-                    database=database,
-                    user=user,
-                    password=password)
-    print('Postgres conectado')
+    logtec.connect_postgres(host,database,port,user,password)
 
-# Execute a query
 @eel.expose
-def select_seco():
-    cur_pos = con_pos.cursor()
-    cur_pos.execute("SELECT * FROM public.unidade_med")
-    records = cur_pos.fetchall()
-    df = pd.DataFrame(records)
-    print(df[0][0])
-
-
-
+def pos_con_close():
+    logtec.pos_con_close()
 
 
 @eel.expose
@@ -144,11 +136,7 @@ def ora_con_close():
     con.close()
     print('Conexao Oracle Fechada')
 
-# Fechar conexao POSTGRES
-@eel.expose
-def pos_con_close():
-    con_pos.close()
-    print('Conexao Postgres Fechada')
+
 
 #Select para validor os modulos da migração
 
