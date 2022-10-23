@@ -8,13 +8,13 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script type="text/javascript" src="/eel.js"></script>
   <script type="text/javascript" src="main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
     crossorigin="anonymous"></script>
 </head>
-
 
 <body>
   <!-- Nav Tab -->
@@ -26,7 +26,7 @@
       <a class="nav-link" href="#">Migração</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled" href="#">Link</a>
+      <a class="nav-link" href="/utility.html">Utilitários</a>
     </li>
     <li class="nav-item">
       <a class="nav-link bi bi-gear" href="/config.html"> Configurações</a>
@@ -34,14 +34,12 @@
   </ul>
   <!-- Nav Tab -->
 
-
   <!-- Gutter principal -->
   <div class="container-fluid">
     <div class="container px-4 text-center shadow-lg p-3 mb-5 bg-body rounded">
       <div class="row gx-5">
         <div class="col">
           <div class="p-3 border rounded-3 bg-light">
-
             <div class="row align-items-center">
               <div class="col">
                 <!-- Oracle Button trigger modal -->
@@ -51,22 +49,23 @@
                 <!-- Oracle Button trigger modal -->
               </div>
               <div class="col">
-              <label id="ora_conectado">
-                Desconectado
-              </label>
-              <div class="form-check form-switch position-relative">
-                <input class="form-check-input position-absolute" onclick="ora_con_close_js('ora_conectado','flexSwitch_conectado')" type="checkbox" id="flexSwitch_conectado" disabled>
-                <label class="form-check-label" onclick="ora_con_close_js('ora_conectado','flexSwitch_conectado')" for="flexSwitch_conectado"></label>
+                <label id="ora_conectado">
+                  Desconectado
+                </label>
+                <div class="form-check form-switch position-relative">
+                  <input class="form-check-input position-absolute"
+                    onclick="ora_con_close_js('ora_conectado','flexSwitch_conectado')" type="checkbox"
+                    id="flexSwitch_conectado" disabled>
+                  <label class="form-check-label" onclick="ora_con_close_js('ora_conectado','flexSwitch_conectado')"
+                    for="flexSwitch_conectado"></label>
+                </div>
               </div>
             </div>
-            </div>
-
           </div>
         </div>
         <div class="col">
           <div class="p-3 border rounded-3 bg-light">
-
-            <table class="table">
+            <table class="table" id="table_modulos_gs">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -76,41 +75,10 @@
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">1</th>
-                  <td>Unidades de Medida</td>
-                  <td><input class="form-check-input" type="checkbox" value="" id="flexCheck_valid_un_medid"></td>
                 </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Departamentos</td>
-                  <td><input class="form-check-input" type="checkbox" value="" id="flexCheck_valid_dept"></td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Categorias</td>
-                  <td><input class="form-check-input" type="checkbox" value="" id="flexCheck_valid_cat"></td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>Grupos</td>
-                  <td><input class="form-check-input" type="checkbox" value="" id="flexCheck_valid_grp"></td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td>Info. Nutricional</td>
-                  <td><input class="form-check-input" type="checkbox" value="" id="flexCheck_valid_info_nutri"></td>
-                </tr>
-                <tr>
-                  <th scope="row">6</th>
-                  <td>Produtos</td>
-                  <td><input class="form-check-input" type="checkbox" value="" id="flexCheck_valid_prduto"></td>
-                </tr>
-                
               </tbody>
             </table>
-
             <button type="button" onclick="ora_mod_select_js()" class="btn btn-primary">Validar</button>
-            
           </div>
         </div>
       </div>
@@ -124,46 +92,41 @@
       <div class="row gx-5">
         <div class="col">
           <div class="p-3 border rounded-3 bg-light">
-
             <div class="row align-items-center">
-              <select class="col form-select" id="sistema_migrado" onchange="sistema_migrado(this)"
-                aria-label="Default select example">
-                <option selected>Sistema a Ser Migrado</option>
-                <option value="1">LOGTEC Sistemas</option>
-                <option value="2">Disabled 01</option>
-                <option value="3">Disabled 02</option>
+              <select class="col form-select" onchange="sistema_migrado(this)" aria-label="Default select example"
+                id="drop_generate_sistemas">
+                <option>Sistemas Disponíveis</option>
               </select>
-            <div class="col">
-              <label id="sistema_conectado">
-                Desconectado
-              </label>
-              <div class="form-check form-switch position-relative">
-                <input class="form-check-input position-absolute" onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" type="checkbox" id="flexSwitch_sistema_conectado" disabled>
-                <label class="form-check-label" onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" for="flexSwitch_sistema_conectado"></label>
+              <div class="col">
+                <label id="sistema_conectado">
+                  Desconectado
+                </label>
+                <div class="form-check form-switch position-relative">
+                  <input class="form-check-input position-absolute"
+                    onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" type="checkbox"
+                    id="flexSwitch_sistema_conectado" disabled>
+                  <label class="form-check-label"
+                    onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')"
+                    for="flexSwitch_sistema_conectado"></label>
+                </div>
               </div>
-            </div>
             </div>
             <button type="button" id="show_logtec_modal" hidden="true" class="btn btn-primary" data-bs-toggle="modal"
               data-bs-target="#staticlogtec">
               Conectar no Postgress
             </button>
-
           </div>
         </div>
         <div class="col">
           <div class="p-3 border rounded-3 bg-light">
 
-            <input type="button" class="btn btn-primary disabled" onclick="" value="disabled">
-
+            <input type="button" class="btn btn-primary" onclick="" value="Migrar tabelas">
           </div>
         </div>
       </div>
     </div>
   </div>
   <!-- Gutter Secundario -->
-
-
-
 
 
   <!-- Oracle Modal -->
@@ -173,7 +136,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão</h5>
-          <button type="button" class="btn-close" onclick="close_modal('ora_conectado_message')"" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" onclick="close_modal('ora_conectado_message')" data-bs-dismiss="modal"
+            aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3"></div>
@@ -202,22 +166,20 @@
               </div>
             </div>
           </div>
-
-
         </div>
         <div class="modal-footer">
           <div class="alert alert-success" id="ora_conectado_message" hidden role="alert">
             Conectado
           </div>
-          <input type="button" class="btn btn-primary" onclick="conn_oracle('ora_conectado','flexSwitch_conectado','ora_conectado_message')" value="Conectar">
-          <button type="button" class="btn btn-secondary" onclick="close_modal('ora_conectado_message')" data-bs-dismiss="modal">Fechar</button>
-
+          <input type="button" class="btn btn-primary"
+            onclick="conn_oracle('ora_conectado','flexSwitch_conectado','ora_conectado_message')" value="Conectar">
+          <button type="button" class="btn btn-secondary" onclick="close_modal('ora_conectado_message')"
+            data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>
     </div>
   </div>
   <!-- Oracle Modal -->
-
 
   <!-- Postgress Modal -->
   <div class="modal fade" id="staticlogtec" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -255,14 +217,12 @@
               </div>
             </div>
           </div>
-
-
         </div>
         <div class="modal-footer">
           <div class="random_number"></div>
-          <input type="button" class="btn btn-primary" onclick="conn_postgres('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
+          <input type="button" class="btn btn-primary"
+            onclick="conn_postgres('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-
         </div>
       </div>
     </div>
@@ -270,10 +230,5 @@
   <!-- Postgress Modal -->
 
 </body>
-
-<script
-  src="https://code.jquery.com/jquery-3.6.1.js"
-  integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-  crossorigin="anonymous"></script>
 
 </html>

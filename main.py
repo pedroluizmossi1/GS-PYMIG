@@ -11,26 +11,23 @@ import sys
 import os
 import configparser
 
-#import python files
+# import python files
 import templates.sistemas.logtec as logtec
 
 # name of folder where the html, css, js, image files are located
 eel.init('templates')
 
 
-#Conexao SQLITE3
+# Conexao SQLITE3
 con_lite = sqlite3.connect("pymig.db")
 cur_lite = con_lite.cursor()
-
+# Conexao SQLITE3
 
 
 # Configuçao do config.ini
-
 config = configparser.ConfigParser()
 config.read('config.ini')
 default_config = config['DEFAULT']
-
-
 config.read('config.ini')
 print(default_config.get('InstantClient'))
 # Configuçao do config.ini
@@ -71,13 +68,27 @@ def connect_oracle(ora_login, ora_password, ora_host, ora_port, ora_service):
     return ora_conectado
 
 # Abertura da Conexao POSTGRES
+
+
 @eel.expose
-def connect_postgres(host,database,port,user,password):
-    logtec.connect_postgres(host,database,port,user,password)
+def connect_postgres(host, database, port, user, password):
+    logtec.connect_postgres(host, database, port, user, password)
+# Abertura da Conexao POSTGRES
+# Encerramento da Conexao POSTGRES
+
 
 @eel.expose
 def pos_con_close():
     logtec.pos_con_close()
+# Encerramento da Conexao POSTGRES
+# Select em todas tabelas
+
+
+@eel.expose
+def insert_tabelas_sqlite_logtec():
+    logtec.insert_tabelas_sqlite()
+    return logtec.insert_tabelas_sqlite()
+# Select em todas tabelas
 
 
 @eel.expose
@@ -116,7 +127,7 @@ def read_parm_ora_con():
 
 
 @eel.expose
-def parm_instant_client(parm_instant_client_value,ora_user,ora_host,ora_port,ora_sid):
+def parm_instant_client(parm_instant_client_value, ora_user, ora_host, ora_port, ora_sid):
     cfgfile = open('config.ini', 'w')
     config.set('DEFAULT', 'InstantClient', parm_instant_client_value)
     config.set('ORA_CON', 'user', ora_user)
@@ -127,9 +138,6 @@ def parm_instant_client(parm_instant_client_value,ora_user,ora_host,ora_port,ora
     cfgfile.close()
 
 
-
-
-
 # Fechar conexao ORACLE
 @eel.expose
 def ora_con_close():
@@ -137,14 +145,14 @@ def ora_con_close():
     print('Conexao Oracle Fechada')
 
 
-
-#Select para validor os modulos da migração
+# Select para validor os modulos da migração
 
 def to_tuple(first_output):
-        series = []
-        for py_tuple in first_output:
-            series.append(py_tuple[0])
-        return tuple(series)
+    series = []
+    for py_tuple in first_output:
+        series.append(py_tuple[0])
+    return tuple(series)
+
 
 @eel.expose
 def ora_mod_select():
@@ -154,19 +162,18 @@ def ora_mod_select():
                                 where ao.object_name like '%P_PYMIG%'
                                 and ao.object_type = 'PACKAGE'
                                 and ao.procedure_name is not null
-                                """)                           
-    employee=[]
+                                """)
+    employee = []
     for i in cur:
         employee.append(i[0])
     print(employee)
-    cur.close()  
-    return(employee)
-    
+    cur.close()
+    return (employee)
 
 
+# Insert Unidades de medida oracle
+df = (['KD', 'KI'], ['KD', 'KI'])
 
-#Insert Unidades de medida oracle
-df = (['KD', 'KI'],['KD', 'KI'])
 
 @eel.expose
 def ora_mod_un_medid():
@@ -175,13 +182,61 @@ def ora_mod_un_medid():
     len_start = 0
     while len_start < len_sql:
 
-        cur = con.cursor() 
+        cur = con.cursor()
         myvar = df[0][len_start]
         myvar2 = df[1][len_start]
-        cur.callproc('gondola.p_pymig_import_un_medid', (myvar,myvar2)) 
+        cur.callproc('gondola.p_pymig_import_un_medid', (myvar, myvar2))
         len_start = len_start+1
-        cur.close() 
+        cur.close()
     con.commit()
+
+# Selecionar os sistemas cadastrados SQLITE.
+
+
+@eel.expose
+def select_sqlite_sistemas():
+    cur_lite.execute("select id_sistema, nome from sistemas")
+    row = cur_lite.fetchall()
+    print(row)
+    return (row)
+
+# Selecionar os modulos do GS cadastrados SQLITE.
+
+
+@eel.expose
+def select_sqlite_modulos_gs():
+    cur_lite.execute("select id_modulo, nome, nome_procedure from modulos_gs")
+    row = cur_lite.fetchall()
+    return (row)
+
+# Inserir Modulos migrados SQLITE.
+
+
+@eel.expose
+def insert_sqlite_modulos_gs(modulo_nome, modulo_procedure, modulo_texto):
+    cur_lite.execute("SELECT max(id_modulo) FROM modulos_gs")
+    next_primary_key = cur_lite.fetchone()
+    next_primary_key = next_primary_key[0]
+    if next_primary_key is None:
+        next_primary_key = 0
+    next_primary_key = next_primary_key + 1
+    sqlite_insert_with_param = "INSERT INTO modulos_gs (id_modulo,nome, nome_procedure, texto_procedure) VALUES (?,?,?,?)"
+    data_tuple = (next_primary_key, modulo_nome,
+                  modulo_procedure, modulo_texto)
+    cur_lite.execute(sqlite_insert_with_param, data_tuple)
+    con_lite.commit()
+    return (next_primary_key, modulo_nome, modulo_procedure, modulo_texto)
+
+
+@eel.expose
+def delete_sqlite_modulos_gs(id_modulo_del):
+    sqlite_delete_with_param = "delete from modulos_gs where id_modulo = ?"
+    cur_lite.execute(sqlite_delete_with_param, (id_modulo_del,))
+    con_lite.commit()
+    print(id_modulo_del)
+    return(id_modulo_del)
+
+
 
 # 1000 is width of window and 600 is the height
 eel.start('index.html', mode='default', size=(1000, 600))
