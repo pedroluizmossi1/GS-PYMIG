@@ -230,3 +230,17 @@ function delete_sqlite_modulos_gs_js() {
   refreshTable();
 }
 
+
+setInterval(async function() {
+   let select = await eel.check_sqlite_connection()();
+  if (select == 0) {
+    console.log('alive') 
+  }
+}, 30000);
+
+
+
+
+
+
+

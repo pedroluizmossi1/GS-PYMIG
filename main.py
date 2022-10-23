@@ -236,6 +236,17 @@ def delete_sqlite_modulos_gs(id_modulo_del):
     print(id_modulo_del)
     return(id_modulo_del)
 
+@eel.expose
+def check_sqlite_connection():
+    try:
+        cur_lite.execute("SELECT 1")
+    except sqlite3.OperationalError:
+        return 1
+    return 0
+
+
+
+
 
 
 # 1000 is width of window and 600 is the height
