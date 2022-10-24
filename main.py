@@ -10,6 +10,7 @@ import sqlite3
 import sys
 import os
 import configparser
+import re
 
 # import python files
 import templates.sistemas.logtec as logtec
@@ -21,7 +22,20 @@ eel.init('templates')
 # Conexao SQLITE3
 con_lite = sqlite3.connect("pymig.db")
 cur_lite = con_lite.cursor()
+
 # Conexao SQLITE3
+@eel.expose
+def connect_sqlite():
+    global con_lite
+    global cur_lite
+    con_lite = sqlite3.connect("pymig.db")
+    cur_lite = con_lite.cursor()
+
+# close SQLITE3 connection
+@eel.expose
+def close_sqlite():
+    con_lite.close()
+    return "Conexao SQlite Fechada"
 
 
 # Configuçao do config.ini
@@ -66,6 +80,15 @@ def connect_oracle(ora_login, ora_password, ora_host, ora_port, ora_service):
     except BaseException as e:
         ora_conectado = e
     return ora_conectado
+
+
+
+# Fechar conexao ORACLE
+@eel.expose
+def ora_con_close():
+    con.close()
+    print('Conexao Oracle Fechada')
+
 
 # Abertura da Conexao POSTGRES
 
@@ -138,37 +161,19 @@ def parm_instant_client(parm_instant_client_value, ora_user, ora_host, ora_port,
     cfgfile.close()
 
 
-# Fechar conexao ORACLE
-@eel.expose
-def ora_con_close():
-    con.close()
-    print('Conexao Oracle Fechada')
-
 
 # Select para validor os modulos da migração
 
-def to_tuple(first_output):
-    series = []
-    for py_tuple in first_output:
-        series.append(py_tuple[0])
-    return tuple(series)
-
 
 @eel.expose
-def ora_mod_select():
+def ora_mod_select(package_name,procedure_name,user_name):
     cur = con.cursor()
-    cur.arraysize = 100
-    cur.execute("""select ao.procedure_name from all_procedures ao
-                                where ao.object_name like '%P_PYMIG%'
-                                and ao.object_type = 'PACKAGE'
-                                and ao.procedure_name is not null
-                                """)
-    employee = []
-    for i in cur:
-        employee.append(i[0])
-    print(employee)
+    sql = ('''select owner||'.'||object_name||'.'||procedure_name  from all_procedures where object_name = upper(:1) and procedure_name = upper(:2) and owner = upper(:3)''')
+    bind = (package_name, procedure_name, user_name)
+    select = cur.execute(sql, bind)
+    select = cur.fetchall()
     cur.close()
-    return (employee)
+    return select
 
 
 # Insert Unidades de medida oracle
@@ -237,6 +242,16 @@ def delete_sqlite_modulos_gs(id_modulo_del):
     return(id_modulo_del)
 
 
+#check sqlite status conexao
+@eel.expose
+def sqlite_status_con():
+    cur_lite.execute("select 1")
+    status = cur_lite.fetchone()
+    status = status[0]
+    if  status == 1:
+        return 0
+    else:
+        return 1
 
 # 1000 is width of window and 600 is the height
 eel.start('index.html', mode='default', size=(1000, 600))

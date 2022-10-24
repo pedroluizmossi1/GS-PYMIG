@@ -26,11 +26,20 @@
             <a class="nav-link" href="/index.html">Migração</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Utilitários</a>
+            <a class="nav-link" href="">Utilitários</a>
         </li>
         <li class="nav-item">
             <a class="nav-link bi bi-gear" href="/config.html"> Configurações</a>
         </li>
+        <div>
+            <button type="button" class="btn btn-primary btn-sm" id="myBtn" onclick="connect_sqlite_js()">Conectar no
+                SQlite</button>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
+                <label class="form-check-label" for="flexSwitch_conectado_sqlite"
+                    id="sqlite_status">Desconectado</label>
+            </div>
+        </div>
     </ul>
     <!-- Nav Tab -->
 
@@ -39,15 +48,31 @@
         <div class="container px-4 text-center shadow-lg p-3 mb-5 bg-body rounded">
             <div class="row gx-5">
                 <div class="col">
-                    <div class="p-3 border rounded-3 mb-3 bg-light">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#stati_insert_tables">
-                            1 - Inserir Tabelas de Checagem
-                        </button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            onclick="select_sqlite_modulos_gs_util_js()" data-bs-target="#stati_insert_tables">
-                            2 - Inserir Modulos a Migrar
-                        </button>
+                    <div class="p-3 border rounded-3 bg-light">
+                        <div class="row align-items-center">
+                            <label for="exampleInputEmail1" class="form-label">Gestão de Supermercados</label>
+                            <div class="col">
+                                <div>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        onclick="select_sqlite_modulos_gs_util_js()"
+                                        data-bs-target="#stati_insert_tables">
+                                        Inserir Modulos a Migrar
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="p-3 border rounded-3 bg-light">
+                        <label for="exampleInputEmail1" class="form-label">Sistemas de Terceiros</label>
+                        <div class="col">
+                            <button type="button" class="btn btn-primary" id="modal" data-bs-toggle="modal"
+                                onclick="create_modal('teste')" data-bs-target="#">
+                                Inserir Tabelas de Checagem
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -79,8 +104,8 @@
                                 placeholder="gondola.teste.teste">
                         </div>
                         <div class="mb-3">
-                            <label for="modulo_texto_input" class="form-label">Código da Procedure</label>
-                            <textarea class="form-control" id="modulo_texto_input" rows="6"></textarea>
+                            <label for="modulo_texto_input" class="form-label ">Código da Procedure</label>
+                            <textarea class="form-control " id="modulo_texto_input" rows="6"></textarea>
                         </div>
                     </div>
                     <div class="container-sm">
@@ -131,6 +156,12 @@
     </div>
     <!-- Insert tables Modal -->
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
