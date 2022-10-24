@@ -1,3 +1,17 @@
+$(document).ready(function(){
+  $("#myBtn").click(function(){
+      $("#myToast").toast("show");
+  });
+
+    ora_conectado_load_page();
+    pos_conectado_load_page();
+
+
+});
+
+
+
+
 //Conexao Oracle
 function conn_oracle(label, checkbox, message) {
   eel.connect_oracle(document.getElementById("oracle_user").value, document.getElementById("oracle_password").value, document.getElementById("oracle_host").value, document.getElementById("oracle_port").value, document.getElementById("oracle_sid").value)(function (number) {
@@ -7,9 +21,12 @@ function conn_oracle(label, checkbox, message) {
 
     document.getElementById(label).innerHTML = 'Conectado'
     sessionStorage.setItem(label, "Conectado")
+    document.getElementById(label).style = "color: green"
     document.getElementById(checkbox).checked = true
     sessionStorage.setItem(checkbox, "true")
     document.getElementById(checkbox).disabled = false;
+    //store label style color on session storage
+    sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
   })
 }
 //Conexao Oracle
@@ -22,24 +39,30 @@ function conn_postgres(label, checkbox) {
     document.getElementById(checkbox).checked = true
     sessionStorage.setItem(checkbox, "true")
     document.getElementById(checkbox).disabled = false;
+    document.getElementById(label).style = "color: green"
+    sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
   })
 }
 //Conexao Postgres
 
+
+
 async function ora_mod_select_js() {
-  // Inside a function marked 'async' we can use the 'await' keyword.
+  let select = await eel.select_sqlite_modulos_gs()();
+  //extract value from select third column and console log it with for loop
+  for (let i = 0; i < select.length; i++) {
+    //extract select third column value and separate it with dot and create 3 variables and use eel.ora_mod_select() to get the value from python
+    let [id, modulo, descricao] = select[i][2].split(".");
+    console.log(id, modulo, descricao)    
+    let select_ora = await eel.ora_mod_select(id, modulo, descricao)() 
+      console.log(select_ora)
 
-  let n = await eel.ora_mod_select()(); // Must prefix call with 'await', otherwise it's the same syntax
-  console.log(n)
-  console.log(n.includes("P_PYMIG_IMPORT_UN_MEDID"))
-  if (n.includes("P_IMPORT_UN_MEDID") == true) {
-    document.getElementById("flexCheck_valid_un_medid").setAttribute("checked", "true")
-  }
-  if (n.includes("P_IMPORT_DEPT") == true) {
-    document.getElementById("flexCheck_valid_dept").setAttribute("checked", "true")
-  }
+  
 
+
+  }
 }
+
 
 // Onclick of the button
 function ora_version() {
@@ -72,7 +95,12 @@ onload = function read_parm_instant_client_js() {
       document.getElementById("save_parm_ins_cli_label").value = read_value
     }
   })
-
+  //check flexSwitch_conectado_sqlite
+  if (sessionStorage.getItem("flexSwitch_conectado_sqlite") == "true") {
+    document.getElementById("flexSwitch_conectado_sqlite").checked = true
+  }
+  //check o status da conexao do SQLite
+  sqlite_status_con_js()
   //carrega a lista de Sistemas.
   select_sqlite_sistemas_js();
   //carrega a lista de Modulos GS.
@@ -84,35 +112,7 @@ onload = function read_parm_instant_client_js() {
     document.getElementById("oracle_port").value = read_value[2]
     document.getElementById("oracle_sid").value = read_value[3]
   })
-
-
-  /*Check BOX ORACLE*/
-  if (sessionStorage.getItem("ora_conectado") == null) {
-    document.getElementById("ora_conectado").innerHTML = "Desconectado"
-  } else {
-    document.getElementById("ora_conectado").innerHTML = sessionStorage.getItem("ora_conectado")
-  }
-
-  if (sessionStorage.getItem("flexSwitch_conectado").value == 0) {
-    document.getElementById("flexSwitch_conectado").checked = 'false'
-  } else {
-    document.getElementById("flexSwitch_conectado").checked = sessionStorage.getItem("flexSwitch_conectado")
-    document.getElementById("flexSwitch_conectado").disabled = false
-  }
-
-  /*Check BOX LOGTEC*/
-  if (sessionStorage.getItem("sistema_conectado") == null) {
-    document.getElementById("sistema_conectado").innerHTML = "Desconectado"
-  } else {
-    document.getElementById("sistema_conectado").innerHTML = sessionStorage.getItem("sistema_conectado")
-  }
-
-  if (sessionStorage.getItem("flexSwitch_sistema_conectado").value == 0) {
-    document.getElementById("flexSwitch_sistema_conectado").checked = 'false'
-  } else {
-    document.getElementById("flexSwitch_sistema_conectado").checked = sessionStorage.getItem("flexSwitch_sistema_conectado")
-    document.getElementById("flexSwitch_sistema_conectado").disabled = false
-  }
+  
 }
 
 
@@ -122,6 +122,8 @@ function ora_con_close_js(label, checkbox) {
   document.getElementById(checkbox).disabled = true
   document.getElementById(label).innerHTML = 'Desconectado'
   sessionStorage.setItem(label, "Desconectado")
+  document.getElementById(label).style = "color: red"
+  sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
 }
 
 function pos_con_close_js(label, checkbox) {
@@ -130,6 +132,8 @@ function pos_con_close_js(label, checkbox) {
   document.getElementById(checkbox).disabled = true
   document.getElementById(label).innerHTML = 'Desconectado'
   sessionStorage.setItem(label, "Desconectado")
+  document.getElementById(label).style = "color: red"
+  sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
 }
 
 function close_modal(modal_name) {
@@ -185,7 +189,6 @@ async function select_sqlite_modulos_gs_js() {
   for (let i = 0; i < select.length; i++) {
 
     $("#table_modulos_gs").find('tbody').append("<tr><th>" + select.map(col => col[0])[i] + "</th><th>" + select.map(col => col[1])[i] + '</th><th><input class="form-check-input" type="checkbox" value="" id="' + select.map(col => col[2])[i] + '"><label class="form-check-label" for="flexCheckDefault"></th></tr>"');
-
   }
 }
 
@@ -197,13 +200,15 @@ async function select_sqlite_modulos_gs_util_js() {
   for (let i = 0; i < select.length; i++) {
 
     $("#table_modulos_gs_util").find('tbody').append("<tr id=" + 'row_modulos_gs' + "><th>" + select.map(col => col[0])[i] + "</th><th>" + select.map(col => col[1])[i] + '</th><th><input class="form-check-input" type="checkbox" " id="delete_modulos_gs_checkbox" value="' + select.map(col => col[0])[i] + '"><label class="form-check-label" for="delete_modulos_gs_checkbox"></th></tr>"');
-
+    
   }
+  return select
 }
 
 
 // JQUERY START
 $(document).ready(function () {
+
 
 });
 
@@ -231,16 +236,88 @@ function delete_sqlite_modulos_gs_js() {
 }
 
 
-setInterval(async function() {
-   let select = await eel.check_sqlite_connection()();
-  if (select == 0) {
-    console.log('alive') 
+//close sqlite3 connection
+function close_sqlite_js() {
+  eel.close_sqlite()
+  console.log("Conexao SQlite Fechada")
+}
+
+
+
+
+
+//check sqlite connection status every 10 second
+setInterval(function () {
+  sqlite_status_con_js()
+
+}, 10000);
+
+async function sqlite_status_con_js(){
+  let select = await eel.sqlite_status_con()();
+if ( select == 0) {
+  document.getElementById('sqlite_status').innerHTML = 'Conectado'
+  document.getElementById('sqlite_status').style.color = 'green'
+  document.getElementById('flexSwitch_conectado_sqlite').checked = true
+  console.log(select)
+}
+else {
+  document.getElementById('sqlite_status').innerHTML = 'Desconectado'
+  document.getElementById('sqlite_status').style.color = 'red'
+  document.getElementById('flexSwitch_conectado_sqlite').checked = false
+  console.log(select)
+}
+}
+
+
+//catch all Uncaught in promise alert and extract texterror it to output message
+window.addEventListener('unhandledrejection', function (event) {
+  var texterror = event.reason;
+  //texterror object to string
+  var texterror = JSON.stringify(texterror);
+  //find "Cannot operate on a closed database" inside texterror
+  var texterror = texterror.search("Cannot operate on a closed database");
+  //if texterror is not -1 then show alert
+  if (texterror != -1) {
+    //show toast id="myToast" with message from var texterror
+    document.getElementById('myToast_message').innerHTML = 'Erro: Conexao com o banco de dados SQlite3 foi fechada'
+    $("#myToast").toast("show");
+    document.getElementById('sqlite_status').innerHTML = 'Desconectado'
+    document.getElementById('sqlite_status').style.color = 'red'
+    document.getElementById('flexSwitch_conectado_sqlite').checked = false
+
+    event.preventDefault();
+}
+});
+
+
+function connect_sqlite_js() {
+  eel.connect_sqlite()
+  console.log("Conexao SQlite Aberta")
+}
+
+function ora_conectado_load_page() {
+  if (sessionStorage.getItem("ora_conectado") == "Desconectado") {
+    document.getElementById("ora_conectado").innerHTML = "Desconectado"
+    document.getElementById("flexSwitch_conectado").checked = false
   }
-}, 30000);
+    if (sessionStorage.getItem("ora_conectado") == "Conectado") {
+    document.getElementById("ora_conectado").innerHTML = sessionStorage.getItem("ora_conectado")
+    document.getElementById("ora_conectado").style = "color: " + sessionStorage.getItem("ora_conectado_color")
+    document.getElementById("flexSwitch_conectado").checked = true
+    document.getElementById("flexSwitch_conectado").disabled = false
+  }
+}
 
-
-
-
-
-
+function pos_conectado_load_page() {
+if (sessionStorage.getItem("sistema_conectado") == "Desconectado") {
+  document.getElementById("sistema_conectado").innerHTML = "Desconectado"
+  document.getElementById("flexSwitch_sistema_conectado").checked = false
+}
+if (sessionStorage.getItem("sistema_conectado") == "Conectado") {
+  document.getElementById("sistema_conectado").innerHTML = sessionStorage.getItem("sistema_conectado")
+  document.getElementById("sistema_conectado").style = "color: " + sessionStorage.getItem("sistema_conectado_color")
+  document.getElementById("flexSwitch_sistema_conectado").checked = true
+  document.getElementById("flexSwitch_sistema_conectado").disabled = false
+}
+}
 
