@@ -166,14 +166,19 @@ def parm_instant_client(parm_instant_client_value, ora_user, ora_host, ora_port,
 
 
 @eel.expose
-def ora_mod_select(package_name,procedure_name,user_name):
+def ora_mod_select(user_name,package_name,procedure_name):
+    print(user_name,package_name,procedure_name)
     cur = con.cursor()
     sql = ('''select owner||'.'||object_name||'.'||procedure_name  from all_procedures where object_name = upper(:1) and procedure_name = upper(:2) and owner = upper(:3)''')
     bind = (package_name, procedure_name, user_name)
     select = cur.execute(sql, bind)
-    select = cur.fetchall()
-    cur.close()
-    return select
+    select = cur.fetchone()
+    while True:
+        if select is None:
+            print(select)
+            return False
+        elif select is not None:
+            return True
 
 
 # Insert Unidades de medida oracle
@@ -253,5 +258,6 @@ def sqlite_status_con():
     else:
         return 1
 
+
 # 1000 is width of window and 600 is the height
-eel.start('index.html', mode='default', size=(1000, 600))
+eel.start('index.html',  size=(1000, 600))

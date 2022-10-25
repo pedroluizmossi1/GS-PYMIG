@@ -2,10 +2,11 @@ $(document).ready(function(){
   $("#myBtn").click(function(){
       $("#myToast").toast("show");
   });
-
+  var pathname = window.location.pathname;
+    if ( pathname == '/index.html') {
     ora_conectado_load_page();
     pos_conectado_load_page();
-
+    }
 
 });
 
@@ -53,13 +54,12 @@ async function ora_mod_select_js() {
   for (let i = 0; i < select.length; i++) {
     //extract select third column value and separate it with dot and create 3 variables and use eel.ora_mod_select() to get the value from python
     let [id, modulo, descricao] = select[i][2].split(".");
-    console.log(id, modulo, descricao)    
     let select_ora = await eel.ora_mod_select(id, modulo, descricao)() 
-      console.log(select_ora)
-
-  
-
-
+    if (select_ora == true) {
+      modulo_gs_ora = id +'.'+ modulo +'.'+ descricao
+      document.getElementById(modulo_gs_ora).checked = true
+      ;
+    }
   }
 }
 
@@ -99,19 +99,26 @@ onload = function read_parm_instant_client_js() {
   if (sessionStorage.getItem("flexSwitch_conectado_sqlite") == "true") {
     document.getElementById("flexSwitch_conectado_sqlite").checked = true
   }
+  var pathname = window.location.pathname;
   //check o status da conexao do SQLite
   sqlite_status_con_js()
   //carrega a lista de Sistemas.
-  select_sqlite_sistemas_js();
+  if(pathname == '/index.html'){
+    select_sqlite_sistemas_js();
+  }
   //carrega a lista de Modulos GS.
   select_sqlite_modulos_gs_js()
-
-  eel.read_parm_ora_con()(function (read_value) {
-    document.getElementById("oracle_user").value = read_value[0]
-    document.getElementById("oracle_host").value = read_value[1]
-    document.getElementById("oracle_port").value = read_value[2]
-    document.getElementById("oracle_sid").value = read_value[3]
-  })
+  if(pathname == '/utility.html'){
+  }
+  else{
+    eel.read_parm_ora_con()(function (read_value) {
+      document.getElementById("oracle_user").value = read_value[0]
+      document.getElementById("oracle_host").value = read_value[1]
+      document.getElementById("oracle_port").value = read_value[2]
+      document.getElementById("oracle_sid").value = read_value[3]
+    })
+  }
+  
   
 }
 
@@ -142,9 +149,6 @@ function close_modal(modal_name) {
 
 async function insert_tabelas_sqlite_logtec_js() {
   let n = await eel.insert_tabelas_sqlite()();
-  console.log(n.array)
-  console.log(n.length)
-  console.log(n)
   var i = 0;
   for (let i = 0; i < n.length; i++) {
     i++;
@@ -161,9 +165,6 @@ async function insert_tabelas_sqlite_logtec_js() {
 
 async function select_sqlite_sistemas_js() {
   let select = await eel.select_sqlite_sistemas()();
-  console.log(select.array)
-  console.log(select.length)
-  console.log(select)
   for (let i = 0; i < select.length; i++) {
     var node = document.createElement('option')
     node.value = select.map(col => col[0])[i]
@@ -183,9 +184,6 @@ function insert_sqlite_modulos_gs_js() {
 
 async function select_sqlite_modulos_gs_js() {
   let select = await eel.select_sqlite_modulos_gs()();
-  console.log(select.array)
-  console.log(select.length)
-  console.log(select)
   for (let i = 0; i < select.length; i++) {
 
     $("#table_modulos_gs").find('tbody').append("<tr><th>" + select.map(col => col[0])[i] + "</th><th>" + select.map(col => col[1])[i] + '</th><th><input class="form-check-input" type="checkbox" value="" id="' + select.map(col => col[2])[i] + '"><label class="form-check-label" for="flexCheckDefault"></th></tr>"');
@@ -194,9 +192,6 @@ async function select_sqlite_modulos_gs_js() {
 
 async function select_sqlite_modulos_gs_util_js() {
   let select = await eel.select_sqlite_modulos_gs()();
-  console.log(select.array)
-  console.log(select.length)
-  console.log(select)
   for (let i = 0; i < select.length; i++) {
 
     $("#table_modulos_gs_util").find('tbody').append("<tr id=" + 'row_modulos_gs' + "><th>" + select.map(col => col[0])[i] + "</th><th>" + select.map(col => col[1])[i] + '</th><th><input class="form-check-input" type="checkbox" " id="delete_modulos_gs_checkbox" value="' + select.map(col => col[0])[i] + '"><label class="form-check-label" for="delete_modulos_gs_checkbox"></th></tr>"');
@@ -258,13 +253,11 @@ if ( select == 0) {
   document.getElementById('sqlite_status').innerHTML = 'Conectado'
   document.getElementById('sqlite_status').style.color = 'green'
   document.getElementById('flexSwitch_conectado_sqlite').checked = true
-  console.log(select)
 }
 else {
   document.getElementById('sqlite_status').innerHTML = 'Desconectado'
   document.getElementById('sqlite_status').style.color = 'red'
   document.getElementById('flexSwitch_conectado_sqlite').checked = false
-  console.log(select)
 }
 }
 
@@ -321,3 +314,17 @@ if (sessionStorage.getItem("sistema_conectado") == "Conectado") {
 }
 }
 
+//create boostrap modal with two inputs for modal on the fly
+function render_modal() {
+  var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+    
+    keyboard: false
+  })
+
+  myModal.show()
+}
+
+//redirect to page with url variable
+function redirect_page(url) {
+  window.location.href = url;
+}
