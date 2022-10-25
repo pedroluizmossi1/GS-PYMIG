@@ -2,7 +2,6 @@ import cx_Oracle
 from email.policy import default
 import eel
 from ctypes.wintypes import CHAR
-import psycopg2
 import pandas as pd
 from tkinter import *
 from tkinter import ttk
@@ -13,7 +12,9 @@ import configparser
 import re
 
 # import python files
-import templates.sistemas.logtec as logtec
+import sistemas.firebird_test as firebird
+import sistemas.logtec_sistemas as logtec_sistemas
+
 
 # name of folder where the html, css, js, image files are located
 eel.init('templates')
@@ -91,27 +92,35 @@ def ora_con_close():
 
 
 # Abertura da Conexao POSTGRES
-
-
 @eel.expose
 def connect_postgres(host, database, port, user, password):
-    logtec.connect_postgres(host, database, port, user, password)
+    logtec_sistemas.connect_postgres(host, database, port, user, password)
 # Abertura da Conexao POSTGRES
+
 # Encerramento da Conexao POSTGRES
-
-
 @eel.expose
 def pos_con_close():
-    logtec.pos_con_close()
+    logtec_sistemas.pos_con_close()
 # Encerramento da Conexao POSTGRES
+
 # Select em todas tabelas
-
-
 @eel.expose
 def insert_tabelas_sqlite_logtec():
-    logtec.insert_tabelas_sqlite()
-    return logtec.insert_tabelas_sqlite()
-# Select em todas tabelas
+    logtec_sistemas.insert_tabelas_sqlite()
+    return logtec_sistemas.insert_tabelas_sqlite()
+
+# Abertura da Conexao FIREBIRD
+@eel.expose
+def connect_firebird(host, database, port, user, password, charset):
+    firebird.connect_firebird(host, database, port, user, password, charset)
+# Abertura da Conexao FIREBIRD
+
+# Encerramento da Conexao FIREBIRD
+@eel.expose
+def fire_con_close():
+    firebird.fire_con_close()
+# Encerramento da Conexao FIREBIRD
+
 
 
 @eel.expose
@@ -205,7 +214,7 @@ def ora_mod_un_medid():
 
 @eel.expose
 def select_sqlite_sistemas():
-    cur_lite.execute("select id_sistema, nome from sistemas")
+    cur_lite.execute("select id_sistema, nome, tipo_bd from sistemas")
     row = cur_lite.fetchall()
     print(row)
     return (row)
