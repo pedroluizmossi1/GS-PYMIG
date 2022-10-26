@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>GS - PyMIG / Configurações</title>
   <link href="style.css" rel="stylesheet">
+  <link href="hover.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -18,47 +19,49 @@
 
 <body>
     <!-- Nav Tab -->
-    <ul class="nav nav-pills nav-fill border border-2 rounded-3 shadow-sm p-3 mb-2 bg-body rounded ">
-        <li class="nav-item">
-            <a class="nav-link bi bi-exclamation-circle" aria-current="page" href="#"> Sobre</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/index.html">Migração</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/utility.html">Utilitários</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link bi bi-gear" href=""> Configurações</a>
-        </li>
-        <div>
-            <button type="button" class="btn btn-primary btn-sm" id="myBtn" onclick="connect_sqlite_js()">Conectar no
-                SQlite</button>
+    <div class="nav nav-pills nav-fill border-2 shadow-sm  mb-2 bg-body py-2 container rounded-5">
+      <!-- Nav Tab -->
+      <div class="container">
+        <ul class="nav nav-pills nav-fill align-items-center">
+          <li class="hvr-grow-shadow rounded">
+            <a class="nav-link hvr-underline-from-left" aria-current="page" href="#"> Sobre</a>
+          </li>
+          <li class="hvr-grow-shadow rounded">
+            <a class="nav-link hvr-underline-from-left" href="/index.html">Migração</a>
+          </li>
+          <li class="hvr-grow-shadow rounded">
+            <a class="nav-link hvr-underline-from-left" id="/utility_html" href="/utility.html">Utilitários</a>
+          </li>
+          <li class="hvr-grow-shadow rounded">
+            <a class="nav-link hvr-underline-from-left" href="#"> Configurações</a>
+          </li>
+          <div> 
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
-                <label class="form-check-label" for="flexSwitch_conectado_sqlite"
-                    id="sqlite_status">Desconectado</label>
+              <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
+              <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
             </div>
-        </div>
-    </ul>
+          </div>
+        </ul>
+      </div>
+    </div>
 
   <!-- Gutter principal -->
   <div class="container-fluid">
-    <div class="container px-4 text-center shadow-lg p-3 mb-5 bg-body rounded">
+    <div class="container px-4 text-center shadow-lg p-3 mb-5 rounded-5">
       <div class="row gx-5">
         <div class="col">
-          <div class="p-3 border rounded-3 mb-3 bg-light">
+          <div class="p-3 border rounded-5 mb-3 bg-light">
             <label for="caminho_oracle_instant_client" class="form-label position-sticky end-100">Diretório do Oracle
               Instant Client</label>
             <div class="input-group">
-              <input type="text" class="form-control" id="save_parm_ins_cli_label" placeholder="instantclient_21_7"
+              <input type="text" class="form-control rounded-5" id="save_parm_ins_cli_label" placeholder="instantclient_21_7"
                 aria-label="Recipient's username">
             </div>
             <label id="help_oracle_instant_client" class="form-text position-sticky end-100">O diretório padrão é
               composto
               somente pelo nome da pasta que fica na raiz do diretório.</label>
           </div>
-          <div class="p-3 border rounded-3 mb-3 bg-light">
+          <div class="p-3 border rounded-5 mb-3 bg-light">
             <div class="container">
               <label for="oracle_con_config_label" class="form-label position-sticky end-100 ">Configurações de
                 Conexão</label>
@@ -66,28 +69,28 @@
                 <div class="col">
                   <label for="oracle_user_label" class="form-label position-sticky end-100">User</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="oracle_user" placeholder="User"
+                    <input type="text" class="form-control rounded-5" id="oracle_user" placeholder="User"
                       aria-label="Recipient's username">
                   </div>
                 </div>
                 <div class="col">
                   <label for="oracle_host_host" class="form-label position-sticky end-100">Host</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="oracle_host" placeholder="IP do Banco de dados"
+                    <input type="text" class="form-control rounded-5" id="oracle_host" placeholder="IP do Banco de dados"
                       aria-label="Recipient's username">
                   </div>
                 </div>
                 <div class="col">
                   <label for="oracle_port_port" class="form-label position-sticky end-100">Port</label>
                   <div class="input-group">
-                    <input type="number" class="form-control" id="oracle_port" placeholder="Port"
+                    <input type="number" class="form-control rounded-5" id="oracle_port" placeholder="Port"
                       aria-label="Recipient's username">
                   </div>
                 </div>
                 <div class="col">
                   <label for="oracle_sid_label" class="form-label position-sticky end-100 ">SID</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" id="oracle_sid" placeholder="SID/Service"
+                    <input type="text" class="form-control rounded-5" id="oracle_sid" placeholder="SID/Service"
                       aria-label="Recipient's username">
                   </div>
                 </div>
@@ -96,7 +99,10 @@
           </div>
         </div>
       </div>
-      <button type="button" class="btn btn-primary position-sticky start-100" onclick=parm_instant_client_js()>Salvar</button>
+      <div class="p-3 border rounded-5 mb-3 bg-light">
+        <button type="button" class="btn btn-primary rounded-5 position-sticky start-100" onclick=parm_instant_client_js()>Salvar</button>
+      </div>
+      
     </div>
   </div>
   <!-- Gutter principal -->

@@ -5,11 +5,11 @@ from ctypes.wintypes import CHAR
 import pandas as pd
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
 import sqlite3
 import sys
 import os
 import configparser
-import re
 
 # import python files
 import sistemas.firebird_test as firebird
@@ -60,7 +60,19 @@ try:
 except Exception as err:
     print("Whoops!")
     print(err)
-    sys.exit(1)
+    #basic tkinter file explorer
+    root = Tk()
+    root.title('Selecione o caminho do Instant Client')
+    root.filename = filedialog.askdirectory(initialdir="/", title="Selecione o caminho do Instant Client")
+    print(root.filename)
+    config['DEFAULT']['InstantClient'] = root.filename
+    with open('config.ini', 'w') as configfile:
+        config.write(configfile)
+    root.destroy()
+    lib_dir = (r'' + default_config.get('InstantClient'))
+    cx_Oracle.init_oracle_client(lib_dir=lib_dir)
+
+# Variavel de ambiente do Instant Client - Fim
 
 
 @eel.expose
@@ -172,8 +184,6 @@ def parm_instant_client(parm_instant_client_value, ora_user, ora_host, ora_port,
 
 
 # Select para validor os modulos da migração
-
-
 @eel.expose
 def ora_mod_select(user_name,package_name,procedure_name):
     print(user_name,package_name,procedure_name)
@@ -210,8 +220,6 @@ def ora_mod_un_medid():
     con.commit()
 
 # Selecionar os sistemas cadastrados SQLITE.
-
-
 @eel.expose
 def select_sqlite_sistemas():
     cur_lite.execute("select id_sistema, nome, tipo_bd from sistemas")
@@ -220,17 +228,21 @@ def select_sqlite_sistemas():
     return (row)
 
 # Selecionar os modulos do GS cadastrados SQLITE.
-
-
 @eel.expose
 def select_sqlite_modulos_gs():
     cur_lite.execute("select id_modulo, nome, nome_procedure from modulos_gs")
     row = cur_lite.fetchall()
     return (row)
 
+# Selecionar os bancos de dados cadastrados SQLITE.
+@eel.expose
+def select_sqlite_bd_gs():
+    cur_lite.execute("select tipo_bd from tipo_bd")
+    row = cur_lite.fetchall()
+    return (row)
+
+
 # Inserir Modulos migrados SQLITE.
-
-
 @eel.expose
 def insert_sqlite_modulos_gs(modulo_nome, modulo_procedure, modulo_texto):
     cur_lite.execute("SELECT max(id_modulo) FROM modulos_gs")
@@ -268,5 +280,35 @@ def sqlite_status_con():
         return 1
 
 
+@eel.expose
+def insert_sqlite_sistemas_gs(sistema_nome, sistema_tipo_bd):
+    cur_lite.execute("SELECT max(id_sistema) FROM sistemas")
+    next_primary_key = cur_lite.fetchone()
+    print(next_primary_key)
+    next_primary_key = next_primary_key[0]
+    if next_primary_key is None:
+        next_primary_key = 0
+    next_primary_key = next_primary_key + 1
+    sqlite_insert_with_param = "INSERT INTO sistemas (id_sistema,nome,tipo_bd) VALUES (?,?,?)"
+    data_tuple = (next_primary_key, sistema_nome,sistema_tipo_bd)
+    cur_lite.execute(sqlite_insert_with_param, data_tuple)
+    con_lite.commit()
+    print(next_primary_key, sistema_nome, sistema_tipo_bd)
+    return (next_primary_key, sistema_nome, sistema_tipo_bd)
+
+
+@eel.expose
+def delete_sqlite_sistemas_gs(id_sistema_del):
+    sqlite_delete_with_param = "delete from sistemas where id_sistema = ?"
+    cur_lite.execute(sqlite_delete_with_param, (id_sistema_del,))
+    con_lite.commit()
+    print(id_sistema_del)
+    return(id_sistema_del)
+
+
+
 # 1000 is width of window and 600 is the height
-eel.start('index.html',  size=(1000, 600))
+eel.start('index.html', mode='default', size=(1000, 600))
+
+
+

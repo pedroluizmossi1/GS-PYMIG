@@ -5,50 +5,54 @@
   <meta charset="utf-8">
   <title>GS - PyMIG</title>
   <link href="style.css" rel="stylesheet">
+  <link href="hover.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script type="text/javascript" src="/eel.js"></script>
   <script type="text/javascript" src="main.js"></script>  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"  crossorigin="anonymous"></script>
 </head>
 
 <body>
+<div class="nav nav-pills nav-fill border-2 shadow-sm  mb-2 bg-body py-2 container rounded-5 " >
   <!-- Nav Tab -->
-  <ul class="nav nav-pills nav-fill border border-2 rounded-3 shadow-sm p-3 mb-2 bg-body rounded ">
-    <li class="nav-item">
-      <a class="nav-link bi bi-exclamation-circle" aria-current="page" href="#"> Sobre</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Migração</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/utility.html">Utilitários</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link bi bi-gear" href="/config.html"> Configurações</a>
-    </li>
-    <div>
-      <button type="button" class="btn btn-primary btn-sm" id="myBtn" onclick="connect_sqlite_js()">Conectar no SQlite</button>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
-        <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
+  <div class="container">
+    <ul class="nav nav-pills nav-fill align-items-center">
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link hvr-underline-from-left" aria-current="page" href="#"> Sobre</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link hvr-underline-from-left" href="#">Migração</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link hvr-underline-from-left" id="utility_html" href="/utility.html">Utilitários</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link hvr-underline-from-left" href="/config.html"> Configurações</a>
+      </li>
+      <div> 
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
+          <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
+        </div>
       </div>
-    </div>
-  </ul>
+    </ul>
+  </div>
+</div>
   <!-- Nav Tab -->
 
   <!-- Gutter principal -->
   <div class="container-fluid">
-    <div class="container px-4 text-center shadow-lg p-3 mb-5 bg-body rounded">
+    <div class="container px-4 text-center shadow-lg p-3 mb-5 rounded-5 ">
       <div class="row gx-5">
         <div class="col">
-          <div class="p-3 border rounded-3 bg-light">
-            <div class="row align-items-center">
+          <div class="p-3 border rounded-5 bg-light">
+            <div class="row align-items-center ">
               <div class="col">
                 <!-- Oracle Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticoracle">
+                <button type="button" class="btn btn-primary rounded-5" data-bs-toggle="modal" data-bs-target="#staticoracle">
                   Conectar no GS
                 </button>
                 <!-- Oracle Button trigger modal -->
@@ -66,7 +70,7 @@
           </div>
         </div>
         <div class="col">
-          <div class="p-3 border rounded-3 bg-light">
+          <div class="p-3 border rounded-5 bg-light">
             <table class="table" id="table_modulos_gs">
               <thead>
                 <tr>
@@ -80,7 +84,7 @@
                 </tr>
               </tbody>
             </table>
-            <button type="button" onclick="ora_mod_select_js()" class="btn btn-primary">Validar</button>
+            <button type="button" onclick="ora_mod_select_js()" class="btn btn-primary rounded-5">Validar</button>
           </div>
         </div>
       </div>
@@ -90,12 +94,12 @@
 
   <!-- Gutter Secundario -->
   <div class="container-fluid">
-    <div class="container px-4 text-center shadow-lg p-3 mb-5 bg-body rounded">
+    <div class="container px-4 text-center shadow-lg p-3 mb-5 rounded-5">
       <div class="row gx-5">
         <div class="col">
-          <div class="p-3 border rounded-3 bg-light">
+          <div class="p-3 border rounded-5 bg-light">
             <div class="row align-items-center">
-              <select class="col form-select" onchange="sistema_migrado(this)" aria-label="Default select example"
+              <select class="col form-select rounded-5 text-center" onchange="sistema_migrado(this)" aria-label="Default select example"
                 id="drop_generate_sistemas">
                 <option>Sistemas Disponíveis</option>
               </select>
@@ -113,9 +117,9 @@
           </div>
         </div>
         <div class="col">
-          <div class="p-3 border rounded-3 bg-light">
+          <div class="p-3 border rounded-5 bg-light">
 
-            <input type="button" class="btn btn-primary" onclick="" value="Migrar tabelas">
+            <input type="button" class="btn btn-primary rounded-5" onclick="" value="Migrar tabelas">
           </div>
         </div>
       </div>
@@ -295,7 +299,6 @@
       </div>
     </div>
   </div>
-
 
 </body>
 
