@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>GS - PyMIG</title>
+  <link rel="shortcut icon" href="logo-senior-3.svg" type="image/x-icon">
   <link href="style.css" rel="stylesheet">
   <link href="hover.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
@@ -16,119 +17,131 @@
 </head>
 
 <body>
-<div class="nav nav-pills nav-fill border-2 shadow-sm  mb-2 bg-body py-2 container rounded-5 " >
-  <!-- Nav Tab -->
-  <div class="container">
-    <ul class="nav nav-pills nav-fill align-items-center">
-      <li class="hvr-grow-shadow rounded">
-        <a class="nav-link hvr-underline-from-left" aria-current="page" href="#"> Sobre</a>
-      </li>
-      <li class="hvr-grow-shadow rounded">
-        <a class="nav-link hvr-underline-from-left" href="#">Migração</a>
-      </li>
-      <li class="hvr-grow-shadow rounded">
-        <a class="nav-link hvr-underline-from-left" id="utility_html" href="/utility.html">Utilitários</a>
-      </li>
-      <li class="hvr-grow-shadow rounded">
-        <a class="nav-link hvr-underline-from-left" href="/config.html"> Configurações</a>
-      </li>
-      <div> 
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
-          <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
+  
+  <div class="navbar nav nav-pills nav-fill border-2 shadow-sm  mb-3 bg-body py-2 container rounded-5 " >
+    <!-- Nav Tab -->
+    <div class="container-fluid ">
+        <li class="hvr-grow-shadow rounded ">
+          <a class="nav-link bi link-success bi-info-circle px-5" aria-current="page" href="#"> Sobre</a>
+        </li>
+        <li class="hvr-grow-shadow rounded">
+          <a class="nav-link link-success bi bi-hdd-rack px-5" href="/index.html"> Migração</a>
+        </li>
+        <li class="hvr-grow-shadow rounded">
+          <a class="nav-link link-success bi bi-boxes px-5" id="utility_html" href="/utility.html"> Utilitários</a>
+        </li>
+        <li class="hvr-grow-shadow rounded">
+          <a class="nav-link link-success bi bi-gear px-5" href="/config.html"> Configurações</a>
+        </li>
+        <div> 
+          <div class="form-check form-switch px-5">
+            <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
+            <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
+          </div>
         </div>
-      </div>
-    </ul>
+    </div>
   </div>
-</div>
   <!-- Nav Tab -->
 
   <!-- Gutter principal -->
-  <div class="container-fluid">
-    <div class="container px-4 text-center shadow-lg p-3 mb-5 rounded-5 ">
+  <div class="container">
+    <div class="container text-center col px-5 shadow-lg p-3 mb-5 rounded-5 ">
       <div class="row gx-5">
-        <div class="col">
+        <div class="col px-0 ">
           <div class="p-3 border rounded-5 bg-light">
             <div class="row align-items-center ">
-              <div class="col">
+              <div class="col p-3 ">
                 <!-- Oracle Button trigger modal -->
-                <button type="button" class="btn btn-primary rounded-5" data-bs-toggle="modal" data-bs-target="#staticoracle">
+                <button type="button" class="btn btn-success rounded-5" data-bs-toggle="modal"
+                  data-bs-target="#staticoracle">
                   Conectar no GS
                 </button>
                 <!-- Oracle Button trigger modal -->
               </div>
-              <div class="col">
-                <div class="form-check form-switch position-relative">
+              <div class="col ">
+                <div class="form-check form-switch p-3 position-relative">
                   <input class="form-check-input position-absolute"
                     onclick="ora_con_close_js('ora_conectado','flexSwitch_conectado')" type="checkbox"
                     id="flexSwitch_conectado" disabled>
-                  <label class="form-check-label" style="color:red" onclick="ora_con_close_js('ora_conectado','flexSwitch_conectado')"
-                    for="flexSwitch_conectado" id="ora_conectado">Desconectado</label>
+                  <label class="form-check-label position-relative bi bi-ethernet" style="color:red"
+                    onclick="ora_con_close_js('ora_conectado','flexSwitch_conectado')" for="flexSwitch_conectado"
+                    id="ora_conectado"></label>
                 </div>
               </div>
+              <div class="p-3 border rounded-5 bg-light">
+                <table class="table" id="table_modulos_gs">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Módulo</th>
+                      <th scope="col">Válido?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                    </tr>
+                  </tbody>
+                </table>
+                <button type="button" onclick="ora_mod_select_js()" class="btn btn-success rounded-5">Validar</button>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+        
+        <div class="col px-3">
+          <div class="col px-0">
+            <div class="p-3 border rounded-5 bg-light">
+              <div class="row align-items-center ">
+                <div class="col p-3 ">
+                  <select class="form-select rounded-5 text-center" onchange="sistema_migrado(this)"
+                    aria-label="Default select example" id="drop_generate_sistemas">
+                    <option>Sistemas Disponíveis</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <div class="form-check p-3  form-switch position-relative">
+                    <input class="form-check-input position-absolute"
+                      onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" type="checkbox"
+                      id="flexSwitch_sistema_conectado" disabled>
+                    <label class="form-check-label  bi bi-ethernet" style="color:red"
+                      onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')"
+                      for="flexSwitch_sistema_conectado" id="sistema_conectado"></label>
+                  </div>
+                </div>
+                <div class="p-3 border rounded-5 bg-light">
+                  <table class="table" id="table_modulos_gs">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Módulo</th>
+                        <th scope="col">Válido?</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button type="button" onclick="ora_mod_select_js()" class="btn btn-success rounded-5">Validar</button>
+                </div>
+              </div>
+    
             </div>
           </div>
         </div>
-        <div class="col">
+            
+        <div class="col px-0">
           <div class="p-3 border rounded-5 bg-light">
-            <table class="table" id="table_modulos_gs">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Módulo</th>
-                  <th scope="col">Válido?</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                </tr>
-              </tbody>
-            </table>
-            <button type="button" onclick="ora_mod_select_js()" class="btn btn-primary rounded-5">Validar</button>
+            <div class="row p-3 align-items-center">
+  
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   <!-- Gutter principal -->
-
-  <!-- Gutter Secundario -->
-  <div class="container-fluid">
-    <div class="container px-4 text-center shadow-lg p-3 mb-5 rounded-5">
-      <div class="row gx-5">
-        <div class="col">
-          <div class="p-3 border rounded-5 bg-light">
-            <div class="row align-items-center">
-              <select class="col form-select rounded-5 text-center" onchange="sistema_migrado(this)" aria-label="Default select example"
-                id="drop_generate_sistemas">
-                <option>Sistemas Disponíveis</option>
-              </select>
-              <div class="col">
-                <div class="form-check form-switch position-relative">
-                  <input class="form-check-input position-absolute"
-                    onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" type="checkbox"
-                    id="flexSwitch_sistema_conectado" disabled>
-                  <label class="form-check-label" style="color:red"
-                    onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')"
-                    for="flexSwitch_sistema_conectado" id="sistema_conectado">Desconectado</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="p-3 border rounded-5 bg-light">
-
-            <input type="button" class="btn btn-primary rounded-5" onclick="" value="Migrar tabelas">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Gutter Secundario -->
-
-  
-
 
   <!-- Oracle Modal -->
   <div class="modal fade" id="staticoracle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -172,7 +185,7 @@
           <div class="alert alert-success" id="ora_conectado_message" hidden role="alert">
             Conectado
           </div>
-          <input type="button" class="btn btn-primary"
+          <input type="button" class="btn btn-success"
             onclick="conn_oracle('ora_conectado','flexSwitch_conectado','ora_conectado_message')" value="Conectar">
           <button type="button" class="btn btn-secondary" onclick="close_modal('ora_conectado_message')"
             data-bs-dismiss="modal">Fechar</button>
@@ -221,14 +234,14 @@
         </div>
         <div class="modal-footer">
           <div class="random_number"></div>
-          <input type="button" class="btn btn-primary"
+          <input type="button" class="btn btn-success"
             onclick="conn_postgres('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>
     </div>
   </div>
-  <button type="button" id="show_postgres_modal" hidden="true" class="btn btn-primary" data-bs-toggle="modal"
+  <button type="button" id="show_postgres_modal" hidden="true" class="btn btn-success" data-bs-toggle="modal"
   data-bs-target="#staticpostgres">
   Conectar no Postgress
   </button>
@@ -277,14 +290,14 @@
         </div>
         <div class="modal-footer">
           <div class="random_number"></div>
-          <input type="button" class="btn btn-primary"
+          <input type="button" class="btn btn-success"
             onclick="conn_firebird('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>
     </div>
   </div>
-  <button type="button" id="show_firebird_modal" hidden="true" class="btn btn-primary" data-bs-toggle="modal"
+  <button type="button" id="show_firebird_modal" hidden="true" class="btn btn-success" data-bs-toggle="modal"
   data-bs-target="#staticfirebird">
   Conectar no Firebird
   </button>
@@ -294,7 +307,7 @@
     <div class="toast-body" >
       <a id="myToast_message"></a>
       <div class="mt-2 pt-2 border-top">
-        <button type="button" class="btn btn-primary btn-sm">Take action</button>
+        <button type="button" class="btn btn-success btn-sm">Take action</button>
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
       </div>
     </div>
