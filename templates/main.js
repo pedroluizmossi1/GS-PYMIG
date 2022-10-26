@@ -34,7 +34,11 @@ function conn_oracle(label, checkbox, message) {
 
 //Conexao Postgres
 function conn_postgres(label, checkbox) {
-  eel.connect_postgres(document.getElementById("postgres_host").value, document.getElementById("postgres_database").value, document.getElementById("postgres_port").value, document.getElementById("postgres_user").value, document.getElementById("postgres_password").value)(function (number) {
+  eel.connect_postgres(document.getElementById("postgres_host").value, 
+  document.getElementById("postgres_database").value, 
+  document.getElementById("postgres_port").value, 
+  document.getElementById("postgres_user").value, 
+  document.getElementById("postgres_password").value)(function (number) {
     document.getElementById(label).innerHTML = 'Conectado'
     sessionStorage.setItem(label, "Conectado")
     document.getElementById(checkbox).checked = true
@@ -45,6 +49,29 @@ function conn_postgres(label, checkbox) {
   })
 }
 //Conexao Postgres
+
+//Conexao Firebird
+function conn_firebird(label, checkbox) {
+  var firebird_host = document.getElementById("firebird_host").value;
+  var firebird_database = document.getElementById("firebird_database").value;
+  var firebird_port = document.getElementById("firebird_port").value;
+  var firebird_user = document.getElementById("firebird_user").value;
+  var firebird_password = document.getElementById("firebird_password").value;
+  var firebird_charset = document.getElementById("firebird_charset").value;
+  eel.connect_firebird(firebird_host,firebird_database,firebird_port,firebird_user,firebird_password,firebird_charset)(function (number) {
+    document.getElementById(label).innerHTML = 'Conectado'
+    sessionStorage.setItem(label, "Conectado")
+    document.getElementById(checkbox).checked = true
+    sessionStorage.setItem(checkbox, "true")
+    document.getElementById(checkbox).disabled = false;
+    document.getElementById(label).style = "color: green"
+    sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+
+    alert(firebird_file)
+  })
+}
+
+//Conexao Firebird
 
 
 
@@ -74,12 +101,30 @@ function ora_version() {
 }
 
 function sistema_migrado(selectObject) {
-  var value = selectObject.value;
-  if (value == 1) {
-    document.getElementById('show_logtec_modal').click();
+  var value = document.querySelector('#'+selectObject.id);
+  var index = value.options[value.selectedIndex].id;
+  if (index == "POSTGRES") {
+    //show modal with this parameter data-bs-toggle data-bs-target
+    //Document.getElementById('modal_postgres').setAttribute("data-bs-toggle", "collapse")
+    document.getElementById('show_postgres_modal').click();
+    return false;
+  } else if (index == "FIREBIRD") {
+    document.getElementById('show_firebird_modal').click();
+    return false;
+  } else if (index == "ORACLE") {
+    document.getElementById('show_oracle_modal').click();
+    return false;
+  } else if (index == "SQLSERVER") {
+    document.getElementById('show_sqlserver_modal').click();
+    return false;
+  } else if (index == "MYSQL") {
+    document.getElementById('show_mysql_modal').click();
+    return false;
+  } else {
     return false;
   }
 }
+
 
 function parm_instant_client_js() {
   eel.parm_instant_client(document.getElementById("save_parm_ins_cli_label").value,
@@ -169,6 +214,7 @@ async function select_sqlite_sistemas_js() {
     var node = document.createElement('option')
     node.value = select.map(col => col[0])[i]
     node.innerHTML = select.map(col => col[1])[i]
+    node.id = select.map(col => col[2])[i]
     document.getElementById('drop_generate_sistemas').appendChild(node);
   }
 }

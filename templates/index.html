@@ -110,10 +110,6 @@
                 </div>
               </div>
             </div>
-            <button type="button" id="show_logtec_modal" hidden="true" class="btn btn-primary" data-bs-toggle="modal"
-              data-bs-target="#staticlogtec">
-              Conectar no Postgress
-            </button>
           </div>
         </div>
         <div class="col">
@@ -183,12 +179,12 @@
   <!-- Oracle Modal -->
 
   <!-- Postgress Modal -->
-  <div class="modal fade" id="staticlogtec" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="staticpostgres" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão</h5>
+          <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão do Postgres</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -196,25 +192,25 @@
           <div class="container-sm">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control" id="postgres_user" placeholder="Login" aria-label="First name">
+                <input type="text" class="form-control" id="postgres_user" placeholder="Login" aria-label="Login">
               </div>
               <div class="col">
                 <input type="password" class="form-control" id="postgres_password" placeholder="Password"
-                  aria-label="Last name">
+                  aria-label="Password">
               </div>
             </div>
             <div class="mb-3"></div>
             <div class="mb-3">
-              <input type="text" class="form-control" id="postgres_host" placeholder="Host" aria-label="First name">
+              <input type="text" class="form-control" id="postgres_host" placeholder="Host" aria-label="Host">
             </div>
             <div class="row">
               <div class="col">
                 <input type="number" class="form-control" id="postgres_port" placeholder="Port" value="5432"
-                  aria-label="First name">
+                  aria-label="Port">
               </div>
               <div class="col">
                 <input type="text" class="form-control" id="postgres_database" placeholder="Database"
-                  aria-label="First name">
+                  aria-label="Database">
               </div>
             </div>
           </div>
@@ -228,7 +224,67 @@
       </div>
     </div>
   </div>
+  <button type="button" id="show_postgres_modal" hidden="true" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#staticpostgres">
+  Conectar no Postgress
+  </button>
   <!-- Postgress Modal -->
+
+  <!-- Firebird Modal -->
+  <div class="modal fade" id="staticfirebird" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão do Firebird</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3"></div>
+          <div class="container-sm">
+            <div class="row">
+              <div class="col">
+                <input type="text" class="form-control" id="firebird_user" placeholder="Login" aria-label="Login">
+              </div>
+              <div class="col">
+                <input type="password" class="form-control" id="firebird_password" placeholder="Password"
+                  aria-label="Password">
+              </div>
+            </div>
+            <div class="mb-3"></div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="firebird_host" placeholder="Host" aria-label="Host">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="firebird_database" placeholder="Database"
+                aria-label="Database">
+            </div>
+            <div class="row">
+              <div class="col">
+                <input type="number" class="form-control" id="firebird_port" placeholder="Port" value="3050"
+                  aria-label="Port">
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" id="firebird_charset" placeholder="Charset" value="WIN1251"
+                aria-label="Charset">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="random_number"></div>
+          <input type="button" class="btn btn-primary"
+            onclick="conn_firebird('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="button" id="show_firebird_modal" hidden="true" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#staticfirebird">
+  Conectar no Firebird
+  </button>
+  <!-- Firebird Modal -->
 
   <div class="toast" style="position: absolute; bottom: 10px; right: 10px;" role="alert" aria-live="assertive" aria-atomic="true" id="myToast">
     <div class="toast-body" >
