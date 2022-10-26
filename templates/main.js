@@ -163,8 +163,6 @@ onload = function read_parm_instant_client_js() {
       document.getElementById("oracle_sid").value = read_value[3]
     })
   }
-  
-  
 }
 
 
@@ -360,17 +358,104 @@ if (sessionStorage.getItem("sistema_conectado") == "Conectado") {
 }
 }
 
-//create boostrap modal with two inputs for modal on the fly
-function render_modal() {
-  var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+//Utilitarios Configurações de sistemas
+function show_sistemas_config() {
+  
+  document.getElementById("sistemas_config").innerHTML = `<div class="text-start">
+  <div class="mb-3">
+      <label for="sistema_nome" class="form-label ">Nome do Sistema</label>
+  <input class="form-control" id="sistema_nome" aria-describedby="Sistema 01">
+</div>
+<div class="mb-3">
+  <label for="sistema_bd" class="form-label">Banco de dados do Sistema</label>
+  <select class="form-select" aria-label="Default select example" id="select_tipo_bd">
+      <option selected>Selecione o Banco de Dados</option>
+    </select>
+</div>
+</div>
+<div class="mb-3">
+                        <table class="table text-center" id="table_sistemas_gs_util_body">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Sistema</th>
+                                    <th scope="col">Excluir?</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center" id="table_sistemas_gs_util_body">
+                                <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+<div class="text-end">
+<button class="btn btn-primary " onclick="insert_sqlite_sistemas_gs_js()">Salvar</button>
+<button class="btn btn-danger " onclick="delete_sqlite_sistemas_gs_js()">Excluir</button>
+<button type="button" class="btn btn-secondary " onclick="hidden_sistemas_config()"data-bs-dismiss="modal">Fechar</button>
+</div>`
+  select_sqlite_bd_gs_js()
+  select_sqlite_sistemas_util_js()
+}
+
+function hidden_sistemas_config() {
+  document.getElementById("sistemas_config").innerHTML = ""
+}
+
+
+async function select_sqlite_bd_gs_js() {
+  let select = await eel.select_sqlite_bd_gs()();
+  for (let i = 0; i < select.length; i++) {
+    var node = document.createElement('option')
+    node.value = select.map(col => col[0])[i]
+    node.innerHTML = select.map(col => col[0])[i]
+    node.id = select.map(col => col[0])[i]
+    document.getElementById('select_tipo_bd').appendChild(node);
+  }
+}
+
+function insert_sqlite_sistemas_gs_js() {
+  var value = document.querySelector('#select_tipo_bd');
+  var index = value.options[value.selectedIndex].id;
+  if (document.getElementById('sistema_nome').value != "" && index != "") {
+    eel.insert_sqlite_sistemas_gs(document.getElementById('sistema_nome').value,index)
+    show_sistemas_config()
+  }
+  else
+    alert('Campo Sem valor')
+}
+
+async function insert_tabelas_sqlite_logtec_js() {
+  let n = await eel.insert_tabelas_sqlite()();
+  var i = 0;
+  for (let i = 0; i < n.length; i++) {
+    i++;
+    var title = document.getElementById('drop_generate').value;
+    var node = document.createElement('div');
+    node.innerHTML = '<input type="text" class="form-control" placeholder="' + n[i] + '">'
+    document.getElementById('drop_generate').appendChild(node);
+  }
+
+}
+
+async function select_sqlite_sistemas_util_js() {
+  let select = await eel.select_sqlite_sistemas()();
+  for (let i = 0; i < select.length; i++) {
+
+    $("#table_sistemas_gs_util_body").find('tbody').append("<tr id=" + 'row_modulos_gs' + "><th>" + select.map(col => col[0])[i] + "</th><th>" + select.map(col => col[1])[i] + '</th><th><input class="form-check-input" type="checkbox" " id="delete_modulos_gs_checkbox" value="' + select.map(col => col[0])[i] + '"><label class="form-check-label" for="delete_modulos_gs_checkbox"></th></tr>"');
     
-    keyboard: false
-  })
-
-  myModal.show()
+  }
+  return select
 }
 
-//redirect to page with url variable
-function redirect_page(url) {
-  window.location.href = url;
+function delete_sqlite_sistemas_gs_js() {
+  var checked = $("input[type=checkbox]:checked").map(function () {
+    return this.value;
+  }).get();
+  for (let i = 0; i < checked.length; i++) {
+    eel.delete_sqlite_sistemas_gs(checked[i])
+  }
+  console.log(checked)
+  show_sistemas_config()
 }
+
+//Utilitarios Configurações de sistemas

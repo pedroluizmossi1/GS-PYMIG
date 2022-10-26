@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>GS - PyMIG / Utilitários</title>
     <link href="style.css" rel="stylesheet">
+    <link href="hover.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -18,42 +19,44 @@
 
 <body>
     <!-- Nav Tab -->
-    <ul class="nav nav-pills nav-fill border border-2 rounded-3 shadow-sm p-3 mb-2 bg-body rounded ">
-        <li class="nav-item">
-            <a class="nav-link bi bi-exclamation-circle" aria-current="page" href="#"> Sobre</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/index.html">Migração</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="">Utilitários</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link bi bi-gear" href="/config.html"> Configurações</a>
-        </li>
-        <div>
-            <button type="button" class="btn btn-primary btn-sm" id="myBtn" onclick="connect_sqlite_js()">Conectar no
-                SQlite</button>
-            <div class="form-check form-switch">
+    <div class="nav nav-pills nav-fill border-2 shadow-sm  mb-2 bg-body py-2 container rounded-5">
+        <!-- Nav Tab -->
+        <div class="container">
+          <ul class="nav nav-pills nav-fill align-items-center">
+            <li class="hvr-grow-shadow rounded">
+              <a class="nav-link hvr-underline-from-left" aria-current="page" href="#"> Sobre</a>
+            </li>
+            <li class="hvr-grow-shadow rounded">
+              <a class="nav-link hvr-underline-from-left" href="/index.html">Migração</a>
+            </li>
+            <li class="hvr-grow-shadow rounded">
+              <a class="nav-link hvr-underline-from-left" id="#" href="#">Utilitários</a>
+            </li>
+            <li class="hvr-grow-shadow rounded">
+              <a class="nav-link hvr-underline-from-left" href="/config.html"> Configurações</a>
+            </li>
+            <div> 
+              <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
-                <label class="form-check-label" for="flexSwitch_conectado_sqlite"
-                    id="sqlite_status">Desconectado</label>
+                <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
+              </div>
             </div>
+          </ul>
         </div>
-    </ul>
+      </div>
     <!-- Nav Tab -->
 
     <!-- Gutter principal -->
     <div class="container-fluid">
-        <div class="container px-4 text-center shadow-lg p-3 mb-5 bg-body rounded">
+        <div class="container px-4 text-center shadow-lg p-3 mb-5 rounded-5">
             <div class="row gx-5">
                 <div class="col">
-                    <div class="p-3 border rounded-3 bg-light">
+                    <div class="p-3 border rounded-5 bg-light">
                         <div class="row align-items-center">
                             <label for="exampleInputEmail1" class="form-label">Gestão de Supermercados</label>
                             <div class="col">
                                 <div>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-primary rounded-5" data-bs-toggle="modal"
                                         onclick="select_sqlite_modulos_gs_util_js()"
                                         data-bs-target="#stati_insert_tables">
                                         Inserir Modulos a Migrar
@@ -65,13 +68,28 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="p-3 border rounded-3 bg-light">
+                    <div class="p-3 border rounded-5 bg-light">
                         <label for="exampleInputEmail1" class="form-label">Sistemas de Terceiros</label>
                         <div class="col">
-                            <button type="button" class="btn btn-primary" onclick="(redirect_page('/webpages/02config_sist.html'))">
-                                Configurações de Sistema
+                            <button type="button" class="btn btn-primary rounded-5" onclick="show_sistemas_config()">
+                                Inserir Sistema a Migrar
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Gutter principal -->
+
+    <!-- Gutter principal -->
+    <div class="container-fluid">
+        <div class="container px-4 text-center shadow-lg p-3 mb-5 rounded-5">
+            <div class="row gx-5">
+                <div>
+                    <div class="p-3 border rounded-5 bg-light">
+                        <a id="sistemas_config"></a>
+                        
                     </div>
                 </div>
             </div>
@@ -83,7 +101,7 @@
     <div class="modal fade" id="stati_insert_tables" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
-            <div class="modal-content">
+            <div class="modal-content rounded-5">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Inserir um Novo Modulo a Ser Migrado</h5>
                     <button type="button" class="btn-close" onclick="deletetable()" data-bs-dismiss="modal"
@@ -93,33 +111,33 @@
                     <div class="mb-3">
                         <div class="mb-3">
                             <label for="modulo_nome_input" class="form-label">Nome do Modulo</label>
-                            <input type="email" class="form-control" id="modulo_nome_input"
+                            <input type="email" class="form-control rounded-5" id="modulo_nome_input"
                                 placeholder="Unidades de Medidas">
                         </div>
                         <div class="mb-3">
                             <label for="modulo_procedure_input" class="form-label">Nome da procedure no banco de
                                 dados</label>
-                            <input type="email" class="form-control" id="modulo_procedure_input"
+                            <input type="email" class="form-control rounded-5" id="modulo_procedure_input"
                                 placeholder="gondola.teste.teste">
                         </div>
                         <div class="mb-3">
                             <label for="modulo_texto_input" class="form-label ">Código da Procedure</label>
-                            <textarea class="form-control " id="modulo_texto_input" rows="6"></textarea>
+                            <textarea class="form-control rounded-5" id="modulo_texto_input" rows="6"></textarea>
                         </div>
                     </div>
                     <div class="container-sm">
                     </div>
                 </div>
                 <div class="modal-footer" id="drop_generate">
-                    <input type="button" id="insert_sqlite_modules_button" class="btn btn-primary"
+                    <input type="button" id="insert_sqlite_modules_button" class="btn btn-primary rounded-5"
                         onclick="insert_sqlite_modulos_gs_js()" value="Inserir">
-                    <button type="button" class="btn btn-secondary" onclick="deletetable()"
+                    <button type="button" class="btn btn-secondary rounded-5" onclick="deletetable()"
                         data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
         <div class="modal-dialog modal-xl">
-            <div class="modal-content">
+            <div class="modal-content rounded-5">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Modulos a serem migrado para o GS</h5>
                     <button type="button" class="btn-close" id="close_modal_button" onclick="deletetable()"
@@ -145,8 +163,8 @@
                     </div>
                 </div>
                 <div class="modal-footer" id="drop_generate">
-                    <input type="button" class="btn btn-danger" onclick="delete_sqlite_modulos_gs_js()" value="Excluir">
-                    <button type="button" class="btn btn-secondary" onclick="deletetable()"
+                    <input type="button" class="btn btn-danger rounded-5" onclick="delete_sqlite_modulos_gs_js()" value="Excluir">
+                    <button type="button" class="btn btn-secondary rounded-5" onclick="deletetable()"
                         data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
