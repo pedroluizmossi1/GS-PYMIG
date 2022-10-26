@@ -52,7 +52,13 @@ function conn_postgres(label, checkbox) {
 
 //Conexao Firebird
 function conn_firebird(label, checkbox) {
-  eel.connect_firebird()(function (number) {
+  var firebird_host = document.getElementById("firebird_host").value;
+  var firebird_database = document.getElementById("firebird_database").value;
+  var firebird_port = document.getElementById("firebird_port").value;
+  var firebird_user = document.getElementById("firebird_user").value;
+  var firebird_password = document.getElementById("firebird_password").value;
+  var firebird_charset = document.getElementById("firebird_charset").value;
+  eel.connect_firebird(firebird_host,firebird_database,firebird_port,firebird_user,firebird_password,firebird_charset)(function (number) {
     document.getElementById(label).innerHTML = 'Conectado'
     sessionStorage.setItem(label, "Conectado")
     document.getElementById(checkbox).checked = true
@@ -60,6 +66,8 @@ function conn_firebird(label, checkbox) {
     document.getElementById(checkbox).disabled = false;
     document.getElementById(label).style = "color: green"
     sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+
+    alert(firebird_file)
   })
 }
 
