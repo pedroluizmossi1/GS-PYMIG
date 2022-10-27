@@ -1,6 +1,6 @@
 /*Google label style*/
 body {
-    background-image: linear-gradient(to right top, #0017ff, #4d31fb, #6c46f6, #825af2, #946ded, #8085f9, #7099fe, #6cabff, #37c3ff, #00d8ff, #19ebff, #5ffbf1);
+    background-image: linear-gradient(to right top, #2ea2cb, #00aac8, #00b1c0, #00b8b4, #00bda3, #18c4a3, #28caa2, #37d1a1, #3bdcb6, #44e6ca, #50f1de, #5ffbf1);
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
@@ -15,3 +15,9 @@ body {
 .table_body_gradient {
     background-image: linear-gradient(to left bottom, #85f8e9, #00ddf3, #00bdff, #0098ff, #0069f4, #3d58e5, #5544d5, #662dc3, #8243c6, #9859c9, #ac70cd, #bd87d1);
 }
+
+#btn-primary{
+    background-color: #00b1c0;
+    border-color: #00b1c0;
+}
+

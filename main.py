@@ -1,3 +1,4 @@
+from statistics import mode
 import cx_Oracle
 from email.policy import default
 import eel
@@ -199,11 +200,7 @@ def ora_mod_select(user_name,package_name,procedure_name):
         elif select is not None:
             return True
 
-
-# Insert Unidades de medida oracle
-df = (['KD', 'KI'], ['KD', 'KI'])
-
-
+df = ()
 @eel.expose
 def ora_mod_un_medid():
     cur = con.cursor()
@@ -305,10 +302,35 @@ def delete_sqlite_sistemas_gs(id_sistema_del):
     print(id_sistema_del)
     return(id_sistema_del)
 
+@eel.expose
+def insert_sqlite_sistemas_tabela_gs(id_sistema, nome,id_modulo):
+    sqlite_insert_with_param = "INSERT INTO sistemas_tabelas (id_sistema,tabela,id_modulo) VALUES (?,?,?)"
+    data_tuple = (id_sistema, nome,id_modulo)
+    cur_lite.execute(sqlite_insert_with_param, data_tuple)
+    con_lite.commit()
+    return (id_sistema, nome, id_modulo)  
+
+#select sistemas_tabelas
+@eel.expose
+def select_sqlite_sistemas_tabela_gs(id):
+    #use id to select the table name and id_sistema
+    cur_lite.execute("select id_sistema, tabela, id_modulo from sistemas_tabelas where id_sistema = ?", (id,))
+    row = cur_lite.fetchall()
+    print(row)
+    return (row)
+
+@eel.expose
+def delete_sqlite_tabela_sistemas_gs(id_sistema,tabela):
+    sqlite_delete_with_param = "delete from sistemas_tabelas where id_sistema = ? and tabela = ?"
+    cur_lite.execute(sqlite_delete_with_param, (id_sistema,tabela))
+    con_lite.commit()
+    print(id_sistema,tabela)
+    return(id_sistema,tabela)
+
 
 
 # 1000 is width of window and 600 is the height
-eel.start('index.html', mode='default', size=(1000, 600))
+eel.start('index.html', mode='default', size=(1366, 768))
 
 
 

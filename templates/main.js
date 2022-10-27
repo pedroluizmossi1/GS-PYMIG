@@ -7,11 +7,9 @@ $(document).ready(function(){
     ora_conectado_load_page();
     pos_conectado_load_page();
     }
-
+    sessionStorage.clear('sistema_migrado_id');
+    sessionStorage.clear('modulos_gs_id');
 });
-
-
-
 
 //Conexao Oracle
 function conn_oracle(label, checkbox, message) {
@@ -46,6 +44,7 @@ function conn_postgres(label, checkbox) {
     document.getElementById(checkbox).disabled = false;
     document.getElementById(label).style = "color: green"
     sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+    sessionStorage.setItem("sistema_conectado_bd", "POSTGRES")
   })
 }
 //Conexao Postgres
@@ -66,6 +65,7 @@ function conn_firebird(label, checkbox) {
     document.getElementById(checkbox).disabled = false;
     document.getElementById(label).style = "color: green"
     sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+    sessionStorage.setItem("sistema_conectado", "FIREBIRD")
 
     alert(firebird_file)
   })
@@ -99,10 +99,11 @@ function ora_version() {
     document.querySelector(".random_number").innerHTML = number;
   })
 }
-
+var pathname = window.location.pathname;
 function sistema_migrado(selectObject) {
   var value = document.querySelector('#'+selectObject.id);
   var index = value.options[value.selectedIndex].id;
+  if (pathname == '/index.html'){
   if (index == "POSTGRES") {
     //show modal with this parameter data-bs-toggle data-bs-target
     //Document.getElementById('modal_postgres').setAttribute("data-bs-toggle", "collapse")
@@ -124,6 +125,7 @@ function sistema_migrado(selectObject) {
     return false;
   }
 }
+}
 
 
 function parm_instant_client_js() {
@@ -144,15 +146,15 @@ onload = function read_parm_instant_client_js() {
   if (sessionStorage.getItem("flexSwitch_conectado_sqlite") == "true") {
     document.getElementById("flexSwitch_conectado_sqlite").checked = true
   }
-  var pathname = window.location.pathname;
   //check o status da conexao do SQLite
   sqlite_status_con_js()
   //carrega a lista de Sistemas.
   if(pathname == '/index.html'){
-    select_sqlite_sistemas_js();
+  select_sqlite_sistemas_js();
   }
   //carrega a lista de Modulos GS.
   select_sqlite_modulos_gs_js()
+
   if(pathname == '/utility.html'){
   }
   else{
@@ -364,11 +366,11 @@ function show_sistemas_config() {
   document.getElementById("sistemas_config").innerHTML = `<div class="text-start">
   <div class="mb-3">
       <label for="sistema_nome" class="form-label ">Nome do Sistema</label>
-  <input class="form-control" id="sistema_nome" aria-describedby="Sistema 01">
+  <input class="form-control rounded-5" id="sistema_nome" aria-describedby="Sistema 01">
 </div>
 <div class="mb-3">
-  <label for="sistema_bd" class="form-label">Banco de dados do Sistema</label>
-  <select class="form-select" aria-label="Default select example" id="select_tipo_bd">
+  <label for="sistema_bd" class="form-label ">Banco de dados do Sistema</label>
+  <select class="form-select rounded-5" aria-label="Default select example" id="select_tipo_bd">
       <option selected>Selecione o Banco de Dados</option>
     </select>
 </div>
@@ -389,18 +391,59 @@ function show_sistemas_config() {
                         </table>
                     </div>
 <div class="text-end">
-<button class="btn btn-primary " onclick="insert_sqlite_sistemas_gs_js()">Salvar</button>
-<button class="btn btn-danger " onclick="delete_sqlite_sistemas_gs_js()">Excluir</button>
-<button type="button" class="btn btn-secondary " onclick="hidden_sistemas_config()"data-bs-dismiss="modal">Fechar</button>
+<button class="btn btn-success rounded-5" onclick="insert_sqlite_sistemas_gs_js()">Salvar</button>
+<button class="btn btn-danger rounded-5" onclick="delete_sqlite_sistemas_gs_js()">Excluir</button>
+<button type="button" class="btn btn-secondary rounded-5" onclick="hidden_sistemas_config()">Fechar</button>
 </div>`
   select_sqlite_bd_gs_js()
   select_sqlite_sistemas_util_js()
 }
 
-function hidden_sistemas_config() {
-  document.getElementById("sistemas_config").innerHTML = ""
+function show_tabelas_sistemas_config() {
+  
+  document.getElementById("sistemas_config").innerHTML = `<div class="text-start">
+  <div class="mb-3">
+  <select class="form-select rounded-5" onchange="sistema_migrado_id(this)"
+                    aria-label="Default select example" id="drop_generate_sistemas">
+                    <option>Escolha o Sistema para Criar a Tabela de Verificação</option>
+                  </select>
+  </div>
+  <div class="mb-3">
+      <label for="nome_tabela_sistema" class="form-label">Nome da Tabela</label>
+  <input class="form-control rounded-5" id="nome_tabela_sistema" aria-describedby="Sistema 01">
+  <div id="nome_tabela_sistema_help" class="form-text">Cuidado a exclusão utiliza o ID do Sistema e o Nome da tabela.</div>
+</div>
+<div class="mb-3">
+  <label for="modulo_gs_ora_util" class="form-label"></label>
+  <select class="form-select rounded-5" onchange="session_storage_modulo_gs(this)" aria-label="Default select example" id="modulo_gs_ora_util">
+      <option selected>Selecione o Modulo do GS</option>
+    </select>
+</div>
+</div>
+<div class="mb-3">
+                        <table class="table text-center rounded-5" id="table_sistemas_gs_util_body">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tabela</th>
+                                    <th scope="col">ID Modulo</th>
+                                    <th scope="col">Excluir?</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center rounded-5" id="table_sistemas_gs_util_body">
+                                <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+<div class="text-end">
+<button class="btn btn-success rounded-5" onclick="insert_sqlite_sistemas_tabela_gs_js()">Salvar</button>
+<button class="btn btn-danger rounded-5" onclick="delete_sqlite_tabela_sistemas_gs_js()">Excluir</button>
+<button type="button" class="btn btn-secondary rounded-5" onclick="hidden_sistemas_config()">Fechar</button>
+</div>`
+select_sqlite_sistemas_js()
+select_sqlite_modulos_gs_drop_js()
 }
-
 
 async function select_sqlite_bd_gs_js() {
   let select = await eel.select_sqlite_bd_gs()();
@@ -441,7 +484,7 @@ async function select_sqlite_sistemas_util_js() {
   let select = await eel.select_sqlite_sistemas()();
   for (let i = 0; i < select.length; i++) {
 
-    $("#table_sistemas_gs_util_body").find('tbody').append("<tr id=" + 'row_modulos_gs' + "><th>" + select.map(col => col[0])[i] + "</th><th>" + select.map(col => col[1])[i] + '</th><th><input class="form-check-input" type="checkbox" " id="delete_modulos_gs_checkbox" value="' + select.map(col => col[0])[i] + '"><label class="form-check-label" for="delete_modulos_gs_checkbox"></th></tr>"');
+    $("#table_sistemas_gs_util_body").find('tbody').append("<tr id=" + 'row_modulos_gs' + "><th>" + select.map(col => col[0])[i] + "</th><th>" + select.map(col => col[1])[i] + '</th>"'+'"<th><input  class="form-check-input" type="checkbox" id="delete_modulos_gs_checkbox"value="' + select.map(col => col[0])[i] + '"><label class="form-check-label" for="delete_modulos_gs_checkbox></th></tr>"');
     
   }
   return select
@@ -458,4 +501,65 @@ function delete_sqlite_sistemas_gs_js() {
   show_sistemas_config()
 }
 
+async function select_sqlite_modulos_gs_drop_js() {
+  let select = await eel.select_sqlite_modulos_gs()();
+    for (let i = 0; i < select.length; i++) {
+      var node = document.createElement('option')
+      node.value = select.map(col => col[0])[i]
+      node.innerHTML = select.map(col => col[1])[i]
+      node.id = select.map(col => col[2])[i]
+      document.getElementById('modulo_gs_ora_util').appendChild(node);
+      console.log(select.map(col => col[1])[i])
+
+  }
+}
+
+function insert_sqlite_sistemas_tabela_gs_js() {
+  var value = document.querySelector('#modulo_gs_ora_util');
+  var index = value.options[value.selectedIndex].value;
+  
+  if (document.getElementById('nome_tabela_sistema').value != "" && index != "" && $.isNumeric(sessionStorage.getItem('modulo_gs_id'))) {
+    eel.insert_sqlite_sistemas_tabela_gs(document.getElementById('drop_generate_sistemas').value , document.getElementById('nome_tabela_sistema').value ,index )
+    select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem('sistema_migrado_id'))
+  }
+  else
+    alert('Campo Sem valor')  
+}
+
+async function select_sqlite_sistemas_tabela_gs_js(id) {
+  $("#table_sistemas_gs_util_body").find('tbody').empty();
+  let select = await eel.select_sqlite_sistemas_tabela_gs(id)();
+  for (let i = 0; i < select.length; i++) {
+    $("#table_sistemas_gs_util_body").find('tbody').append("<tr id=" + 'row_modulos_gs' + "><th>" + select.map(col => col[0])[i] + "</th><th>" + select.map(col => col[1])[i] + "</th><th>" + select.map(col => col[2])[i] + '</th><th><input  class="form-check-input" type="checkbox" id="'+select.map(col => col[1])[i]+'" value="' + select.map(col => col[0])[i] + '"><label class="form-check-label" for="delete_modulos_gs_checkbox></th></tr>"');
+  }
+}
+
+function sistema_migrado_id(selectObject) {
+  var value = document.querySelector('#'+selectObject.id);
+  var index = value.options[value.selectedIndex].value;
+  select_sqlite_sistemas_tabela_gs_js(index)
+  sessionStorage.setItem('sistema_migrado_id', index);
+}
+
+function delete_sqlite_tabela_sistemas_gs_js() {
+  var checked = $("input[type=checkbox]:checked").map(function () {
+    return this.value;
+  }).get();
+  var checked2 = $("input[type=checkbox]:checked").map(function () {
+    return this.id;
+  }).get();
+  for (let i = 0; i < checked.length; i++) {
+    eel.delete_sqlite_tabela_sistemas_gs(checked[i],checked2[i])
+  }
+  console.log(checked)
+  select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem('sistema_migrado_id'))
+}
+
+function session_storage_modulo_gs(sel) {
+  sessionStorage.setItem('modulo_gs_id', sel.value);
+}
+
+function hidden_sistemas_config() {
+  document.getElementById('sistemas_config').innerHTML = '';
+}
 //Utilitarios Configurações de sistemas
