@@ -1,3 +1,4 @@
+from statistics import mode
 import cx_Oracle
 from email.policy import default
 import eel
@@ -318,11 +319,18 @@ def select_sqlite_sistemas_tabela_gs(id):
     print(row)
     return (row)
 
+@eel.expose
+def delete_sqlite_tabela_sistemas_gs(id_sistema,tabela):
+    sqlite_delete_with_param = "delete from sistemas_tabelas where id_sistema = ? and tabela = ?"
+    cur_lite.execute(sqlite_delete_with_param, (id_sistema,tabela))
+    con_lite.commit()
+    print(id_sistema,tabela)
+    return(id_sistema,tabela)
 
 
 
 # 1000 is width of window and 600 is the height
-eel.start('index.html',  size=(1366, 768))
+eel.start('index.html', mode='default', size=(1366, 768))
 
 
 
