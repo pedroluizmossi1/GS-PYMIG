@@ -21,3 +21,12 @@ body {
     border-color: #00b1c0;
 }
 
+.custom_btn_gradient_animation {
+    background: linear-gradient(268deg, #13c338, #13c2c3, #d44ec9);
+    background-size: 600% 600%;
+
+    -webkit-animation: AnimationName 30s ease infinite;
+    -moz-animation: AnimationName 30s ease infinite;
+    animation: AnimationName 30s ease infinite;
+}
+

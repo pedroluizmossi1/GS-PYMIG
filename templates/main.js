@@ -6,7 +6,18 @@ $(document).ready(function(){
     }
     sessionStorage.removeItem('sistema_migrado_id');
     sessionStorage.removeItem('modulos_gs_id');
+    select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem("sistema_conectado_bd_mig"))
+    //jquery function click on button
+    
+    
 });
+
+//change theme-color
+function change_theme_color() {
+  var metaThemeColor = document.querySelector("meta[name=theme-color]");
+  metaThemeColor.setAttribute("content", "#111111");
+}
+    
 
 function show_toast(title,message) {
   const toastLiveExample = document.getElementById('liveToast')
@@ -28,6 +39,9 @@ function conn_oracle(label, checkbox) {
       sessionStorage.setItem(checkbox, "true")
       document.getElementById(checkbox).disabled = false;
       document.getElementById("button_con_ora").disabled = true
+      show_toast("Oracle",number[0])
+    }
+    else {
       show_toast("Oracle",number[0])
     }
   })
@@ -53,6 +67,7 @@ function conn_postgres(label, checkbox) {
   sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
   sessionStorage.setItem("sistema_conectado_bd", "POSTGRES")
   document.getElementById("drop_generate_sistemas").disabled = true
+  select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem("sistema_conectado_bd_mig"))
   show_toast("Postgres",number[0])
   }
   })
@@ -129,7 +144,7 @@ function sistema_migrado(selectObject) {
   }
   var value2 = document.querySelector('#'+selectObject.id);
   var index2 = value2.options[value2.selectedIndex].value;
-  sessionStorage.setItem("sistema_conectado__bd_mig", index2)
+  sessionStorage.setItem("sistema_conectado_bd_mig", index2)
 }
 
 
@@ -151,6 +166,7 @@ onload = function read_parm_instant_client_js() {
   if (sessionStorage.getItem("flexSwitch_conectado_sqlite") == "true") {
     document.getElementById("flexSwitch_conectado_sqlite").checked = true
   }
+  
   //check o status da conexao do SQLite
   sqlite_status_con_js()
   //carrega a lista de Sistemas.
@@ -172,6 +188,10 @@ onload = function read_parm_instant_client_js() {
   }
 }
 
+function clear_log_sistemas() {
+  sessionStorage.removeItem("sistema_conectado_bd_mig");
+  sessionStorage.removeItem("sistema_conectado_bd");
+}
 
 function ora_con_close_js(label, checkbox) {
   eel.ora_con_close()
@@ -191,6 +211,7 @@ function pos_con_close_js(label, checkbox) {
   document.getElementById(label).style = "color: red"
   sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
   document.getElementById("drop_generate_sistemas").disabled = false
+  clear_log_sistemas()
 }
 
 function close_modal(modal_name) {
@@ -221,6 +242,10 @@ async function select_sqlite_sistemas_js() {
     node.innerHTML = select.map(col => col[1])[i]
     node.id = select.map(col => col[2])[i]
     document.getElementById('drop_generate_sistemas').appendChild(node);
+    var index = sessionStorage.getItem("sistema_conectado_bd_mig")
+    jQuery("#drop_generate_sistemas option:selected").removeAttr("selected");
+    jQuery("#drop_generate_sistemas option[value='"+index +"']").attr('selected', 'selected');  
+
   }
 }
 
@@ -565,4 +590,16 @@ function session_storage_modulo_gs(sel) {
 function hidden_sistemas_config() {
   document.getElementById('sistemas_config').innerHTML = '';
 }
-//Utilitarios Configurações de sistemas
+
+async function select_all_tabelas_postgres_js() {
+  let select = await eel.select_sqlite_sistemas_tabela_gs(sessionStorage.getItem("sistema_conectado_bd_mig"))();
+  var select2 = select.map(col => col[1])
+   for (let i = 0; i < select2.length; i++) {
+      let select_pos = await eel.select_all_tabelas_postgres(select2)() 
+      if (select_pos == true) {
+        console.log(select2)
+        document.getElementById(select2[i]).checked = true
+        
+      }
+    }
+}

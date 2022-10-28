@@ -15,7 +15,7 @@ import configparser
 
 # import python files
 import sistemas.firebird_test as firebird
-import sistemas.logtec_sistemas as logtec_sistemas
+import sistemas.postgres as postgres
 
 
 # name of folder where the html, css, js, image files are located
@@ -94,7 +94,7 @@ def connect_oracle(ora_login, ora_password, ora_host, ora_port, ora_service):
         print(ora_conectado)
         return ora_conectado
     except :
-        ora_conectado = ('Erro ao Conectar ao Oracle', False)
+        ora_conectado = ('Erro ao Conectar no Oracle', False)
         print(ora_conectado)
         return ora_conectado
 
@@ -110,14 +110,14 @@ def ora_con_close():
 # Encerramento da Conexao POSTGRES
 @eel.expose
 def pos_con_close():
-    logtec_sistemas.pos_con_close()
+    postgres.pos_con_close()
 # Encerramento da Conexao POSTGRES
 
 # Select em todas tabelas
 @eel.expose
 def insert_tabelas_sqlite_logtec():
-    logtec_sistemas.insert_tabelas_sqlite()
-    return logtec_sistemas.insert_tabelas_sqlite()
+    postgres.insert_tabelas_sqlite()
+    return postgres.insert_tabelas_sqlite()
 
 # Abertura da Conexao FIREBIRD
 @eel.expose
