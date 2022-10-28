@@ -55,7 +55,7 @@
               <div class="col p-3 ">
                 <!-- Oracle Button trigger modal -->
                 <button type="button" class="btn btn-success rounded-5" data-bs-toggle="modal"
-                  data-bs-target="#staticoracle">
+                  data-bs-target="#staticoracle" id="button_con_ora">
                   Conectar no GS
                 </button>
                 <!-- Oracle Button trigger modal -->
@@ -65,8 +65,7 @@
                   <input class="form-check-input position-absolute"
                     onclick="ora_con_close_js('ora_conectado','flexSwitch_conectado')" type="checkbox"
                     id="flexSwitch_conectado" disabled>
-                  <label class="form-check-label position-relative bi bi-ethernet" style="color:red"
-                    onclick="ora_con_close_js('ora_conectado','flexSwitch_conectado')" for="flexSwitch_conectado"
+                  <label class="form-check-label bi bi-ethernet" style="color:red" for="flexSwitch_conectado"
                     id="ora_conectado"></label>
                 </div>
               </div>
@@ -102,21 +101,20 @@
                   </select>
                 </div>
                 <div class="col">
-                  <div class="form-check p-3  form-switch position-relative">
+                  <div class="form-check form-switch p-3 position-relative">
                     <input class="form-check-input position-absolute"
                       onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" type="checkbox"
                       id="flexSwitch_sistema_conectado" disabled>
-                    <label class="form-check-label  bi bi-ethernet" style="color:red"
-                      onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')"
+                    <label class="form-check-label bi bi-ethernet" style="color:red"
                       for="flexSwitch_sistema_conectado" id="sistema_conectado"></label>
                   </div>
                 </div>
                 <div class="p-3 border rounded-5 bg-light">
-                  <table class="table" id="table_modulos_gs">
+                  <table class="table" id="table_sistema_tabelas">
                     <thead>
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Módulo</th>
+                        <th scope="col">Tabela</th>
                         <th scope="col">Válido?</th>
                       </tr>
                     </thead>
@@ -149,7 +147,7 @@
   <div class="modal fade" id="staticoracle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content rounded-5">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão</h5>
           <button type="button" class="btn-close" onclick="close_modal('ora_conectado_message')" data-bs-dismiss="modal"
@@ -160,36 +158,33 @@
           <div class="container-sm">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control" id="oracle_user" placeholder="User" aria-label="First name">
+                <input type="text" class="form-control rounded-5" id="oracle_user" placeholder="User" aria-label="First name">
               </div>
               <div class="col">
-                <input type="password" class="form-control" id="oracle_password" placeholder="Password"
+                <input type="password" class="form-control rounded-5" id="oracle_password" placeholder="Password"
                   aria-label="Last name">
               </div>
             </div>
             <div class="mb-3"></div>
             <div class="mb-3">
-              <input type="text" class="form-control" id="oracle_host" placeholder="Host" aria-label="First name">
+              <input type="text" class="form-control rounded-5" id="oracle_host" placeholder="Host" aria-label="First name">
             </div>
             <div class="row">
               <div class="col">
-                <input type="number" class="form-control" id="oracle_port" placeholder="Port" value="1521"
+                <input type="number" class="form-control rounded-5" id="oracle_port" placeholder="Port" value="1521"
                   aria-label="First name">
               </div>
               <div class="col">
-                <input type="text" class="form-control" id="oracle_sid" placeholder="SID/Service"
+                <input type="text" class="form-control rounded-5" id="oracle_sid" placeholder="SID/Service"
                   aria-label="First name">
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-success" id="ora_conectado_message" hidden role="alert">
-            Conectado
-          </div>
-          <input type="button" class="btn btn-success"
+          <input type="button" class="btn btn-success rounded-5"
             onclick="conn_oracle('ora_conectado','flexSwitch_conectado','ora_conectado_message')" value="Conectar">
-          <button type="button" class="btn btn-secondary" onclick="close_modal('ora_conectado_message')"
+          <button type="button" class="btn btn-secondary rounded-5" onclick="close_modal('ora_conectado_message')"
             data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>
@@ -201,7 +196,7 @@
   <div class="modal fade" id="staticpostgres" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content rounded-5">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão do Postgres</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -211,24 +206,24 @@
           <div class="container-sm">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control" id="postgres_user" placeholder="Login" aria-label="Login">
+                <input type="text" class="form-control rounded-5" id="postgres_user" placeholder="Login" aria-label="Login">
               </div>
               <div class="col">
-                <input type="password" class="form-control" id="postgres_password" placeholder="Password"
+                <input type="password" class="form-control rounded-5" id="postgres_password" placeholder="Password"
                   aria-label="Password">
               </div>
             </div>
             <div class="mb-3"></div>
             <div class="mb-3">
-              <input type="text" class="form-control" id="postgres_host" placeholder="Host" aria-label="Host">
+              <input type="text" class="form-control rounded-5" id="postgres_host" placeholder="Host" aria-label="Host">
             </div>
             <div class="row">
               <div class="col">
-                <input type="number" class="form-control" id="postgres_port" placeholder="Port" value="5432"
+                <input type="number" class="form-control rounded-5" id="postgres_port" placeholder="Port" value="5432"
                   aria-label="Port">
               </div>
               <div class="col">
-                <input type="text" class="form-control" id="postgres_database" placeholder="Database"
+                <input type="text" class="form-control rounded-5" id="postgres_database" placeholder="Database"
                   aria-label="Database">
               </div>
             </div>
@@ -236,9 +231,9 @@
         </div>
         <div class="modal-footer">
           <div class="random_number"></div>
-          <input type="button" class="btn btn-success"
+          <input type="button" class="btn btn-success rounded-5"
             onclick="conn_postgres('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-secondary rounded-5" data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>
     </div>
@@ -253,7 +248,7 @@
   <div class="modal fade" id="staticfirebird" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content rounded-5">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão do Firebird</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -263,28 +258,28 @@
           <div class="container-sm">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control" id="firebird_user" placeholder="Login" aria-label="Login">
+                <input type="text" class="form-control rounded-5" id="firebird_user" placeholder="Login" aria-label="Login">
               </div>
               <div class="col">
-                <input type="password" class="form-control" id="firebird_password" placeholder="Password"
+                <input type="password" class="form-control rounded-5" id="firebird_password" placeholder="Password"
                   aria-label="Password">
               </div>
             </div>
             <div class="mb-3"></div>
             <div class="mb-3">
-              <input type="text" class="form-control" id="firebird_host" placeholder="Host" aria-label="Host">
+              <input type="text" class="form-control rounded-5" id="firebird_host" placeholder="Host" aria-label="Host">
             </div>
             <div class="mb-3">
-              <input type="text" class="form-control" id="firebird_database" placeholder="Database"
+              <input type="text" class="form-control rounded-5" id="firebird_database" placeholder="Database"
                 aria-label="Database">
             </div>
             <div class="row">
               <div class="col">
-                <input type="number" class="form-control" id="firebird_port" placeholder="Port" value="3050"
+                <input type="number" class="form-control rounded-5" id="firebird_port" placeholder="Port" value="3050"
                   aria-label="Port">
               </div>
               <div class="col">
-                <input type="text" class="form-control" id="firebird_charset" placeholder="Charset" value="WIN1251"
+                <input type="text" class="form-control rounded-5" id="firebird_charset" placeholder="Charset" value="WIN1251"
                 aria-label="Charset">
               </div>
             </div>
@@ -292,9 +287,9 @@
         </div>
         <div class="modal-footer">
           <div class="random_number"></div>
-          <input type="button" class="btn btn-success"
+          <input type="button" class="btn btn-success rounded-5"
             onclick="conn_firebird('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-secondary rounded-5" data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>
     </div>
@@ -305,12 +300,14 @@
   </button>
   <!-- Firebird Modal -->
 
-  <div class="toast" style="position: absolute; bottom: 10px; right: 10px;" role="alert" aria-live="assertive" aria-atomic="true" id="myToast">
-    <div class="toast-body" >
-      <a id="myToast_message"></a>
-      <div class="mt-2 pt-2 border-top">
-        <button type="button" class="btn btn-success btn-sm">Take action</button>
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto fs-3 bi bi-send-check" id="toast_origem">Bootstrap</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body fs-5" id="toast_message">
+        Hello, world! This is a toast message.
       </div>
     </div>
   </div>

@@ -2,17 +2,25 @@ import psycopg2
 import pandas as pd
 import eel
 
+  
+
 
 # Conectar ao Postgres
+@eel.expose
 def connect_postgres(host, database, port, user, password):
 
     global con_pos
-    con_pos = psycopg2.connect(host=host,
+    try:
+        con_pos = psycopg2.connect(host=host,
                                database=database,
                                user=user,
                                port=port,
                                password=password)
-    print('Postgres conectado')
+        print('Postgres conectado')
+        return ("Postgres conectado", True)
+    except:
+        print('Erro ao conectar ao Postgres')
+        return ("Erro ao conectar ao Postgres", False)
 
 
 # Fechar conexao POSTGRES
