@@ -69,7 +69,7 @@
                     id="ora_conectado"></label>
                 </div>
               </div>
-              <div class="p-3 border rounded-5 bg-light">
+              <div class="p-3 border rounded-5 bg-light tbodyDiv">
                 <table class="table" id="table_modulos_gs">
                   <thead>
                     <tr>
@@ -78,7 +78,7 @@
                       <th scope="col">Válido?</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody class="sticky-top">
                     <tr>
                     </tr>
                   </tbody>
@@ -110,6 +110,7 @@
                   </div>
                 </div>
                 <div class="p-3 border rounded-5 bg-light">
+                <div class="tbodyDiv px-3">
                   <table class="table" id="table_sistemas_gs_util_body">
                     <thead>
                       <tr>
@@ -119,12 +120,14 @@
                         <th scope="col">Válido?</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="sticky-top">
                       <tr>
                       </tr>
                     </tbody>
                   </table>
+                  
                   <button type="button" onclick="select_all_tabelas_postgres_js()" class="btn btn-success rounded-5">Validar Tabelas</button>
+                </div>
                 </div>
               </div>
     
@@ -133,9 +136,26 @@
         </div>
             
         <div class="col px-0">
-          <div class="p-3 border rounded-5 bg-light">
-            <div class="row p-3 align-items-center">
-  
+          <div class="col px-0">
+            <div class="p-3 border rounded-5 bg-light">
+              <div class="row align-items-center ">
+                <div class="p-3 border rounded-5 bg-light">
+                  <table class="table" id="">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Módulo</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button type="button" onclick="" class="btn btn-success rounded-5">Migrar Modulos</button>
+                </div>
+              </div>
+    
             </div>
           </div>
         </div>

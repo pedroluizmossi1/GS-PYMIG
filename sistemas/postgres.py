@@ -2,6 +2,7 @@ from ctypes import cast
 import psycopg2
 import pandas as pd
 import eel
+import json
 
   
 
@@ -44,3 +45,25 @@ def select_all_tabelas_postgres(nome_tabela):
         cur_pos.close()
         return True
     cur_pos.close()
+
+#psycopg2 python date to string format
+
+@eel.expose
+def select_generico(select):
+    cur_pos = con_pos.cursor()
+    cur_pos.execute(select)
+    colunas = [desc[0] for desc in cur_pos.description]
+    dados = cur_pos.fetchall()
+    #dados to pandas from pandas to list
+    df = pd.DataFrame(dados, columns=colunas)
+    #pandas to json
+    json_data = df.to_json(orient='records')
+    #json to python list
+    cur_pos.close()
+    print(colunas, dados)
+    print(colunas, json_data)
+    return colunas,dados,json_data
+
+
+connect_postgres('localhost', 'BARATAO', 5432, 'postgres', '91396851')
+select_generico("select * from unidade_medida where cod_unidade = 'BJ'")

@@ -256,13 +256,22 @@ async function select_sqlite_sistemas_js() {
   }
 }
 
-function insert_sqlite_modulos_gs_js() {
-  if (document.getElementById('modulo_nome_input').value != "" && document.getElementById('modulo_procedure_input').value != "" && document.getElementById('modulo_texto_input').value != "") {
-    eel.insert_sqlite_modulos_gs(document.getElementById('modulo_nome_input').value, document.getElementById('modulo_procedure_input').value, document.getElementById('modulo_texto_input').value)
+async function insert_sqlite_modulos_gs_js() {
+  try{
+  if (document.getElementById('modulo_id_input').value != "" && document.getElementById('modulo_nome_input').value != "" && document.getElementById('modulo_procedure_input').value != "" && document.getElementById('modulo_texto_input').value != "") {
+      let insert = await eel.insert_sqlite_modulos_gs(document.getElementById('modulo_id_input').value,document.getElementById('modulo_nome_input').value, document.getElementById('modulo_procedure_input').value, document.getElementById('modulo_texto_input').value)();
+    if (insert === 0) {
+      show_toast("Cadastrado","Modulo cadastrado com sucesso!")
+    }
     refreshTable();
+  } else {
+    show_toast("Error","Preencha todos os campos!")
   }
-  else
-    alert('Campo Sem valor')
+  }
+  catch(e){
+  show_toast("Error",e.errorText)
+  }
+
 }
 
 async function select_sqlite_modulos_gs_js() {
@@ -603,4 +612,73 @@ async function select_all_tabelas_postgres_js() {
         
       }
     }
+}
+
+//create modal
+function create_modal() {
+  var modal = document.createElement('div')
+  modal.className = 'modal fade'
+  modal.id = 'modal'
+  modal.setAttribute('tabindex', '-1')
+  modal.setAttribute('role', 'dialog')
+  modal.setAttribute('aria-labelledby', 'exampleModalLabel')
+  modal.setAttribute('aria-hidden', 'true')
+  document.getElementById('modal').appendChild(modal)
+}
+
+async function select_generico_js() {
+  var txt_select = document.getElementById('select_text').value
+  let select1 = await eel.select_generico(txt_select)();
+
+    //create procedural table basead on array
+      //create procedural table basead on array
+      var table = document.createElement('table')
+      table.className = 'table'
+      table.id = 'table_select2'
+    
+      var thead = document.createElement('thead')
+      var tbody = document.createElement('tbody')
+      var tr = document.createElement('tr')
+      var th = document.createElement('th')
+      var td = document.createElement('td')
+      var select1_col = select1[0]
+    
+      for (let i = 0; i < select1_col.length; i++) {
+        var th = document.createElement('th')
+          var td = document.createElement('td')
+          th.innerHTML = select1_col[i]
+          tr.appendChild(th)
+          tr.appendChild(td)
+          thead.appendChild(tr)
+        
+      }
+        //create table body from select[1] json
+        select_rows2 = select1[2]
+        select_rows = select1[1]
+        console.log(select1[2])
+        //select_rows2 to json
+        var select_rows2_json = JSON.parse(select_rows2)
+        console.log(select_rows2_json)
+        for (let i = 0; i < select_rows.length; i++) {
+          var tr = document.createElement('tr')
+          for (let j = 0; j < select_rows[i].length; j++) {
+            var td = document.createElement('td')
+            var th = document.createElement('th')
+            th.innerHTML = select_rows2_json[i][select1_col[j]]
+            tr.appendChild(th)
+            tr.appendChild(td)
+            thead.appendChild(tr)
+          }
+          tbody.appendChild(tr)
+        }
+
+
+        
+      table.appendChild(thead)
+      table.appendChild(tbody)
+      document.getElementById('table_select2').appendChild(table)
+  
+
+
+
 }

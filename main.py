@@ -13,6 +13,8 @@ import sys
 import os
 import configparser
 
+from sqlalchemy import true
+
 # import python files
 import sistemas.firebird_test as firebird
 import sistemas.postgres as postgres
@@ -238,20 +240,16 @@ def select_sqlite_bd_gs():
 
 # Inserir Modulos migrados SQLITE.
 @eel.expose
-def insert_sqlite_modulos_gs(modulo_nome, modulo_procedure, modulo_texto):
-    cur_lite.execute("SELECT max(id_modulo) FROM modulos_gs")
-    next_primary_key = cur_lite.fetchone()
-    next_primary_key = next_primary_key[0]
-    if next_primary_key is None:
-        next_primary_key = 0
-    next_primary_key = next_primary_key + 1
+def insert_sqlite_modulos_gs(id_modulo,modulo_nome, modulo_procedure, modulo_texto):
     sqlite_insert_with_param = "INSERT INTO modulos_gs (id_modulo,nome, nome_procedure, texto_procedure) VALUES (?,?,?,?)"
-    data_tuple = (next_primary_key, modulo_nome,
+    data_tuple = (id_modulo, modulo_nome,
                   modulo_procedure, modulo_texto)
     cur_lite.execute(sqlite_insert_with_param, data_tuple)
     con_lite.commit()
-    return (next_primary_key, modulo_nome, modulo_procedure, modulo_texto)
-
+    if cur_lite.rowcount == 1:
+        return 0
+    else:
+        return 1
 
 @eel.expose
 def delete_sqlite_modulos_gs(id_modulo_del):
