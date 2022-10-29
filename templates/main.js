@@ -193,6 +193,10 @@ function clear_log_sistemas() {
   sessionStorage.removeItem("sistema_conectado_bd");
 }
 
+function clear_row_sistemas() {
+  $("#table_sistemas_gs_util_body").find('tbody').empty();
+}
+
 function ora_con_close_js(label, checkbox) {
   eel.ora_con_close()
   sessionStorage.removeItem(checkbox);
@@ -212,7 +216,10 @@ function pos_con_close_js(label, checkbox) {
   sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
   document.getElementById("drop_generate_sistemas").disabled = false
   clear_log_sistemas()
+  clear_row_sistemas()
 }
+
+
 
 function close_modal(modal_name) {
   document.getElementById(modal_name).setAttribute("hidden", "true")
@@ -275,14 +282,6 @@ async function select_sqlite_modulos_gs_util_js() {
   }
   return select
 }
-
-
-// JQUERY START
-$(document).ready(function () {
-
-
-});
-
 
 function refreshTable() {
   $("row_modulos_gs").load("utility.html table", select_sqlite_modulos_gs_util_js())
@@ -593,11 +592,13 @@ function hidden_sistemas_config() {
 
 async function select_all_tabelas_postgres_js() {
   let select = await eel.select_sqlite_sistemas_tabela_gs(sessionStorage.getItem("sistema_conectado_bd_mig"))();
+  var select1 = select.map(col => col[0])
   var select2 = select.map(col => col[1])
-   for (let i = 0; i < select2.length; i++) {
-      let select_pos = await eel.select_all_tabelas_postgres(select2)() 
+   for (i = 0; i < select2.length; i++) {
+      let select_pos = await eel.select_all_tabelas_postgres(select2[i])()
+      console.log(select_pos) 
       if (select_pos == true) {
-        console.log(select2)
+        console.log(select2[i])
         document.getElementById(select2[i]).checked = true
         
       }
