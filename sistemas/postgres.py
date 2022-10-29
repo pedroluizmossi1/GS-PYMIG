@@ -33,18 +33,14 @@ def pos_con_close():
 @eel.expose
 def select_all_tabelas_postgres(nome_tabela):
     cur_pos = con_pos.cursor()
-    print(nome_tabela[0])
     sql = "SELECT table_name FROM information_schema.tables where table_name = %s"
-    cur_pos.execute(sql, [nome_tabela[0]])
-    tabelas = cur_pos.fetchall()
-    for tabela in tabelas:
-        while True:
-            if tabela is None:
-                print(tabela)
-                cur_pos.close()
-                return False
-            elif tabela is not None:
-                print(tabela)
-                cur_pos.close()
-                return True
+    cur_pos.execute(sql, [nome_tabela])
+    tabelas = cur_pos.fetchone()
+    print(tabelas)
+    if tabelas is None:
+        cur_pos.close()
+        return False
+    elif tabelas is not None:
+        cur_pos.close()
+        return True
     cur_pos.close()
