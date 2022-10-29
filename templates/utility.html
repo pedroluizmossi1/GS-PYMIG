@@ -82,6 +82,13 @@
                                 Inserir Tabelas a Verificar
                             </button>
                         </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-success rounded-5" data-bs-toggle="modal"
+                                        
+                                        data-bs-target="#stati_config_modulos">
+                                        Configurar Modulos por Sistema
+                                    </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,6 +123,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="modulo_id_input" class="form-label">ID do Modulo</label>
+                            <input type="number" class="form-control rounded-5" id="modulo_id_input"
+                                placeholder="ID do Modulo">
+                        </div>
                         <div class="mb-3">
                             <label for="modulo_nome_input" class="form-label">Nome do Modulo</label>
                             <input type="email" class="form-control rounded-5" id="modulo_nome_input"
@@ -179,6 +191,53 @@
     </div>
     </div>
     <!-- Insert tables Modal -->
+
+    <!-- Configurar Modulos Sistemas Modal -->
+    <div class="modal fade" id="stati_config_modulos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content rounded-5">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Inserir um Novo Modulo a Ser Migrado</h5>
+                    <button type="button" class="btn-close" onclick="deletetable()" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="mb-3">
+                    <label for="select_text" class="form-label ">Código da Procedure</label>
+                    <textarea class="form-control rounded-5" id="select_text" rows="6"></textarea>
+                </div>
+                <div id="select_table">
+                    <table class="table text-center" id="table_select2">
+                    </table>
+
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-primary rounded-5" onclick="select_generico_js()">Teste</button>
+                </div>
+                <div class="modal-footer" id="drop_generate">
+                    <input type="button" id="insert_sqlite_modules_button" class="btn btn-success rounded-5"
+                        onclick="insert_sqlite_modulos_gs_js()" value="Inserir">
+                    <button type="button" class="btn btn-secondary rounded-5" onclick="deletetable()"
+                        data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Configurar modulos sistemas Modal -->
+
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto fs-3 bi bi-send-check" id="toast_origem">Bootstrap</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body fs-5" id="toast_message">
+            Hello, world! This is a toast message.
+          </div>
+        </div>
+      </div>
 </body>
 
 </html>
