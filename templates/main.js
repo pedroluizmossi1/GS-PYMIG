@@ -1,50 +1,75 @@
 $(document).ready(function(){
-  $("#myBtn").click(function(){
-      $("#myToast").toast("show");
-  });
   var pathname = window.location.pathname;
     if ( pathname == '/index.html') {
     ora_conectado_load_page();
     pos_conectado_load_page();
     }
-    sessionStorage.clear('sistema_migrado_id');
-    sessionStorage.clear('modulos_gs_id');
+    sessionStorage.removeItem('sistema_migrado_id');
+    sessionStorage.removeItem('modulos_gs_id');
+    select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem("sistema_conectado_bd_mig"))
+    //jquery function click on button
+    
+    
 });
 
-//Conexao Oracle
-function conn_oracle(label, checkbox, message) {
-  eel.connect_oracle(document.getElementById("oracle_user").value, document.getElementById("oracle_password").value, document.getElementById("oracle_host").value, document.getElementById("oracle_port").value, document.getElementById("oracle_sid").value)(function (number) {
-    if (number == 'Conectado') {
-      document.getElementById(message).removeAttribute("hidden")
-    }
+//change theme-color
+function change_theme_color() {
+  var metaThemeColor = document.querySelector("meta[name=theme-color]");
+  metaThemeColor.setAttribute("content", "#111111");
+}
+    
 
-    document.getElementById(label).innerHTML = 'Conectado'
-    sessionStorage.setItem(label, "Conectado")
-    document.getElementById(label).style = "color: green"
-    document.getElementById(checkbox).checked = true
-    sessionStorage.setItem(checkbox, "true")
-    document.getElementById(checkbox).disabled = false;
-    //store label style color on session storage
-    sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+function show_toast(title,message) {
+  const toastLiveExample = document.getElementById('liveToast')
+      const toast = new bootstrap.Toast(toastLiveExample)
+      document.getElementById("toast_message").innerHTML = message
+      document.getElementById("toast_origem").innerHTML = " " + title
+
+      toast.show()
+}
+
+//Conexao Oracle
+function conn_oracle(label, checkbox) {
+  eel.connect_oracle(document.getElementById("oracle_user").value, document.getElementById("oracle_password").value, document.getElementById("oracle_host").value, document.getElementById("oracle_port").value, document.getElementById("oracle_sid").value)(function (number) {
+    if (number[1] === true) {
+      sessionStorage.setItem(label, "Conectado")
+      sessionStorage.setItem("ora_conectado_color", "green")
+      document.getElementById(label).style = "color: green"
+      document.getElementById(checkbox).checked = true
+      sessionStorage.setItem(checkbox, "true")
+      document.getElementById(checkbox).disabled = false;
+      document.getElementById("button_con_ora").disabled = true
+      show_toast("Oracle",number[0])
+    }
+    else {
+      show_toast("Oracle",number[0])
+    }
   })
 }
 //Conexao Oracle
 
+
+
+
 //Conexao Postgres
 function conn_postgres(label, checkbox) {
-  eel.connect_postgres(document.getElementById("postgres_host").value, 
+  eel.connect_postgres(document.getElementById("postgres_host").value,
   document.getElementById("postgres_database").value, 
   document.getElementById("postgres_port").value, 
   document.getElementById("postgres_user").value, 
   document.getElementById("postgres_password").value)(function (number) {
-    document.getElementById(label).innerHTML = 'Conectado'
-    sessionStorage.setItem(label, "Conectado")
-    document.getElementById(checkbox).checked = true
-    sessionStorage.setItem(checkbox, "true")
-    document.getElementById(checkbox).disabled = false;
-    document.getElementById(label).style = "color: green"
-    sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
-    sessionStorage.setItem("sistema_conectado_bd", "POSTGRES")
+  if (number[1] === true){
+  sessionStorage.setItem(label, "Conectado")
+  document.getElementById(checkbox).checked = true
+  sessionStorage.setItem(checkbox, "true")
+  document.getElementById(checkbox).disabled = false;
+  document.getElementById(label).style = "color: green"
+  sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+  sessionStorage.setItem("sistema_conectado_bd", "POSTGRES")
+  document.getElementById("drop_generate_sistemas").disabled = true
+  select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem("sistema_conectado_bd_mig"))
+  show_toast("Postgres",number[0])
+  }
   })
 }
 //Conexao Postgres
@@ -58,7 +83,6 @@ function conn_firebird(label, checkbox) {
   var firebird_password = document.getElementById("firebird_password").value;
   var firebird_charset = document.getElementById("firebird_charset").value;
   eel.connect_firebird(firebird_host,firebird_database,firebird_port,firebird_user,firebird_password,firebird_charset)(function (number) {
-    document.getElementById(label).innerHTML = 'Conectado'
     sessionStorage.setItem(label, "Conectado")
     document.getElementById(checkbox).checked = true
     sessionStorage.setItem(checkbox, "true")
@@ -90,7 +114,6 @@ async function ora_mod_select_js() {
   }
 }
 
-
 // Onclick of the button
 function ora_version() {
   // Call python's random_python function
@@ -108,23 +131,20 @@ function sistema_migrado(selectObject) {
     //show modal with this parameter data-bs-toggle data-bs-target
     //Document.getElementById('modal_postgres').setAttribute("data-bs-toggle", "collapse")
     document.getElementById('show_postgres_modal').click();
-    return false;
   } else if (index == "FIREBIRD") {
     document.getElementById('show_firebird_modal').click();
-    return false;
   } else if (index == "ORACLE") {
     document.getElementById('show_oracle_modal').click();
-    return false;
   } else if (index == "SQLSERVER") {
     document.getElementById('show_sqlserver_modal').click();
-    return false;
   } else if (index == "MYSQL") {
     document.getElementById('show_mysql_modal').click();
-    return false;
   } else {
-    return false;
   }
-}
+  }
+  var value2 = document.querySelector('#'+selectObject.id);
+  var index2 = value2.options[value2.selectedIndex].value;
+  sessionStorage.setItem("sistema_conectado_bd_mig", index2)
 }
 
 
@@ -146,6 +166,7 @@ onload = function read_parm_instant_client_js() {
   if (sessionStorage.getItem("flexSwitch_conectado_sqlite") == "true") {
     document.getElementById("flexSwitch_conectado_sqlite").checked = true
   }
+  
   //check o status da conexao do SQLite
   sqlite_status_con_js()
   //carrega a lista de Sistemas.
@@ -167,25 +188,30 @@ onload = function read_parm_instant_client_js() {
   }
 }
 
+function clear_log_sistemas() {
+  sessionStorage.removeItem("sistema_conectado_bd_mig");
+  sessionStorage.removeItem("sistema_conectado_bd");
+}
 
 function ora_con_close_js(label, checkbox) {
   eel.ora_con_close()
   sessionStorage.removeItem(checkbox);
   document.getElementById(checkbox).disabled = true
-  document.getElementById(label).innerHTML = 'Desconectado'
   sessionStorage.setItem(label, "Desconectado")
   document.getElementById(label).style = "color: red"
   sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+  document.getElementById("button_con_ora").disabled = false
 }
 
 function pos_con_close_js(label, checkbox) {
   eel.pos_con_close()
   sessionStorage.removeItem(checkbox);
   document.getElementById(checkbox).disabled = true
-  document.getElementById(label).innerHTML = 'Desconectado'
   sessionStorage.setItem(label, "Desconectado")
   document.getElementById(label).style = "color: red"
   sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+  document.getElementById("drop_generate_sistemas").disabled = false
+  clear_log_sistemas()
 }
 
 function close_modal(modal_name) {
@@ -216,6 +242,10 @@ async function select_sqlite_sistemas_js() {
     node.innerHTML = select.map(col => col[1])[i]
     node.id = select.map(col => col[2])[i]
     document.getElementById('drop_generate_sistemas').appendChild(node);
+    var index = sessionStorage.getItem("sistema_conectado_bd_mig")
+    jQuery("#drop_generate_sistemas option:selected").removeAttr("selected");
+    jQuery("#drop_generate_sistemas option[value='"+index +"']").attr('selected', 'selected');  
+
   }
 }
 
@@ -336,27 +366,25 @@ function connect_sqlite_js() {
 
 function ora_conectado_load_page() {
   if (sessionStorage.getItem("ora_conectado") == "Desconectado") {
-    document.getElementById("ora_conectado").innerHTML = "Desconectado"
     document.getElementById("flexSwitch_conectado").checked = false
   }
     if (sessionStorage.getItem("ora_conectado") == "Conectado") {
-    document.getElementById("ora_conectado").innerHTML = sessionStorage.getItem("ora_conectado")
     document.getElementById("ora_conectado").style = "color: " + sessionStorage.getItem("ora_conectado_color")
     document.getElementById("flexSwitch_conectado").checked = true
     document.getElementById("flexSwitch_conectado").disabled = false
+    document.getElementById("button_con_ora").disabled = true
   }
 }
 
 function pos_conectado_load_page() {
 if (sessionStorage.getItem("sistema_conectado") == "Desconectado") {
-  document.getElementById("sistema_conectado").innerHTML = "Desconectado"
   document.getElementById("flexSwitch_sistema_conectado").checked = false
 }
 if (sessionStorage.getItem("sistema_conectado") == "Conectado") {
-  document.getElementById("sistema_conectado").innerHTML = sessionStorage.getItem("sistema_conectado")
   document.getElementById("sistema_conectado").style = "color: " + sessionStorage.getItem("sistema_conectado_color")
   document.getElementById("flexSwitch_sistema_conectado").checked = true
   document.getElementById("flexSwitch_sistema_conectado").disabled = false
+  document.getElementById("drop_generate_sistemas").disabled = true 
 }
 }
 
@@ -562,4 +590,16 @@ function session_storage_modulo_gs(sel) {
 function hidden_sistemas_config() {
   document.getElementById('sistemas_config').innerHTML = '';
 }
-//Utilitarios Configurações de sistemas
+
+async function select_all_tabelas_postgres_js() {
+  let select = await eel.select_sqlite_sistemas_tabela_gs(sessionStorage.getItem("sistema_conectado_bd_mig"))();
+  var select2 = select.map(col => col[1])
+   for (let i = 0; i < select2.length; i++) {
+      let select_pos = await eel.select_all_tabelas_postgres(select2)() 
+      if (select_pos == true) {
+        console.log(select2)
+        document.getElementById(select2[i]).checked = true
+        
+      }
+    }
+}

@@ -1,3 +1,4 @@
+from logging import exception
 from statistics import mode
 import cx_Oracle
 from email.policy import default
@@ -14,7 +15,7 @@ import configparser
 
 # import python files
 import sistemas.firebird_test as firebird
-import sistemas.logtec_sistemas as logtec_sistemas
+import sistemas.postgres as postgres
 
 
 # name of folder where the html, css, js, image files are located
@@ -84,16 +85,18 @@ def read_parm_instant_client():
 # Abertura da Conexao ORACLE
 @eel.expose
 def connect_oracle(ora_login, ora_password, ora_host, ora_port, ora_service):
-
-    dsn_tns = cx_Oracle.makedsn(ora_host, ora_port, service_name=ora_service)
-    global con
-    con = cx_Oracle.connect(user=ora_login, password=ora_password, dsn=dsn_tns)
-    print(con.version)
     try:
-        ora_conectado = 'Conectado'
-    except BaseException as e:
-        ora_conectado = e
-    return ora_conectado
+        dsn_tns = cx_Oracle.makedsn(ora_host, ora_port, service_name=ora_service)
+        global con
+        con = cx_Oracle.connect(user=ora_login, password=ora_password, dsn=dsn_tns)
+        print(con.version)
+        ora_conectado = ("Oracle Conectado", True)
+        print(ora_conectado)
+        return ora_conectado
+    except :
+        ora_conectado = ('Erro ao Conectar no Oracle', False)
+        print(ora_conectado)
+        return ora_conectado
 
 
 
@@ -104,23 +107,17 @@ def ora_con_close():
     print('Conexao Oracle Fechada')
 
 
-# Abertura da Conexao POSTGRES
-@eel.expose
-def connect_postgres(host, database, port, user, password):
-    logtec_sistemas.connect_postgres(host, database, port, user, password)
-# Abertura da Conexao POSTGRES
-
 # Encerramento da Conexao POSTGRES
 @eel.expose
 def pos_con_close():
-    logtec_sistemas.pos_con_close()
+    postgres.pos_con_close()
 # Encerramento da Conexao POSTGRES
 
 # Select em todas tabelas
 @eel.expose
 def insert_tabelas_sqlite_logtec():
-    logtec_sistemas.insert_tabelas_sqlite()
-    return logtec_sistemas.insert_tabelas_sqlite()
+    postgres.insert_tabelas_sqlite()
+    return postgres.insert_tabelas_sqlite()
 
 # Abertura da Conexao FIREBIRD
 @eel.expose
