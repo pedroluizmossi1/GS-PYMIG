@@ -671,14 +671,20 @@ async function select_generico_js() {
           }
           tbody.appendChild(tr)
         }
-
-
-        
       table.appendChild(thead)
       table.appendChild(tbody)
       document.getElementById('table_select2').appendChild(table)
-  
+}
 
-
-
+//drag and drop value inside input box
+function drag_drop_input() {
+  var input = document.getElementById('select_text')
+  input.addEventListener('dragover', function (event) {
+    event.preventDefault()
+  })
+  input.addEventListener('drop', function (event) {
+    event.preventDefault()
+    var text = event.dataTransfer.getData('text')
+    input.value = text
+  })
 }
