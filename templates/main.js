@@ -1,16 +1,38 @@
+//Limpar o localStorage ao iniciar
+function clear_localStorage() {
+    localStorage.clear();
+}
+
+
 $(document).ready(function(){
   var pathname = window.location.pathname;
-    if ( pathname == '/index.html') {
+    if ( pathname == '/index.html' || pathname == '/config_modulos.html') {
     ora_conectado_load_page();
     pos_conectado_load_page();
+    select_sqlite_sistemas_js();
     }
-    sessionStorage.removeItem('sistema_migrado_id');
-    sessionStorage.removeItem('modulos_gs_id');
-    select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem("sistema_conectado_bd_mig"))
-    //jquery function click on button
+    if (pathname == '/config_modulos.html') {
+      select_sqlite_modulos_gs_drop_js();
+      if (localStorage.getItem("flexSwitch_conectado") == 'true' && localStorage.getItem("flexSwitch_sistema_conectado") == 'true') {
+        document.getElementById("modulo_gs_ora_util").disabled = false
+      }
+      }
+    localStorage.removeItem('sistema_migrado_id');
+    localStorage.removeItem('modulos_gs_id');
+    select_sqlite_sistemas_tabela_gs_js(localStorage.getItem("sistema_conectado_bd_mig"))
     
-    
+
+    $('#div-1').click(function () {
+  
+      // Load the exertnal html
+      // here this refers to 
+      // current selector
+      $(this).load('div-1.html');
+
+      
+  });
 });
+
 
 //change theme-color
 function change_theme_color() {
@@ -32,11 +54,11 @@ function show_toast(title,message) {
 function conn_oracle(label, checkbox) {
   eel.connect_oracle(document.getElementById("oracle_user").value, document.getElementById("oracle_password").value, document.getElementById("oracle_host").value, document.getElementById("oracle_port").value, document.getElementById("oracle_sid").value)(function (number) {
     if (number[1] === true) {
-      sessionStorage.setItem(label, "Conectado")
-      sessionStorage.setItem("ora_conectado_color", "green")
+      localStorage.setItem(label, "Conectado")
+      localStorage.setItem("ora_conectado_color", "green")
       document.getElementById(label).style = "color: green"
       document.getElementById(checkbox).checked = true
-      sessionStorage.setItem(checkbox, "true")
+      localStorage.setItem(checkbox, "true")
       document.getElementById(checkbox).disabled = false;
       document.getElementById("button_con_ora").disabled = true
       show_toast("Oracle",number[0])
@@ -59,15 +81,15 @@ function conn_postgres(label, checkbox) {
   document.getElementById("postgres_user").value, 
   document.getElementById("postgres_password").value)(function (number) {
   if (number[1] === true){
-  sessionStorage.setItem(label, "Conectado")
+  localStorage.setItem(label, "Conectado")
   document.getElementById(checkbox).checked = true
-  sessionStorage.setItem(checkbox, "true")
+  localStorage.setItem(checkbox, "true")
   document.getElementById(checkbox).disabled = false;
   document.getElementById(label).style = "color: green"
-  sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
-  sessionStorage.setItem("sistema_conectado_bd", "POSTGRES")
+  localStorage.setItem(label + "_color", document.getElementById(label).style.color)
+  localStorage.setItem("sistema_conectado_bd", "POSTGRES")
   document.getElementById("drop_generate_sistemas").disabled = true
-  select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem("sistema_conectado_bd_mig"))
+  select_sqlite_sistemas_tabela_gs_js(localStorage.getItem("sistema_conectado_bd_mig"))
   show_toast("Postgres",number[0])
   }
   })
@@ -83,13 +105,13 @@ function conn_firebird(label, checkbox) {
   var firebird_password = document.getElementById("firebird_password").value;
   var firebird_charset = document.getElementById("firebird_charset").value;
   eel.connect_firebird(firebird_host,firebird_database,firebird_port,firebird_user,firebird_password,firebird_charset)(function (number) {
-    sessionStorage.setItem(label, "Conectado")
+    localStorage.setItem(label, "Conectado")
     document.getElementById(checkbox).checked = true
-    sessionStorage.setItem(checkbox, "true")
+    localStorage.setItem(checkbox, "true")
     document.getElementById(checkbox).disabled = false;
     document.getElementById(label).style = "color: green"
-    sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
-    sessionStorage.setItem("sistema_conectado", "FIREBIRD")
+    localStorage.setItem(label + "_color", document.getElementById(label).style.color)
+    localStorage.setItem("sistema_conectado", "FIREBIRD")
 
     alert(firebird_file)
   })
@@ -126,7 +148,7 @@ var pathname = window.location.pathname;
 function sistema_migrado(selectObject) {
   var value = document.querySelector('#'+selectObject.id);
   var index = value.options[value.selectedIndex].id;
-  if (pathname == '/index.html'){
+  if (pathname == '/index.html' || pathname == '/config_modulos.html') {
   if (index == "POSTGRES") {
     //show modal with this parameter data-bs-toggle data-bs-target
     //Document.getElementById('modal_postgres').setAttribute("data-bs-toggle", "collapse")
@@ -144,7 +166,7 @@ function sistema_migrado(selectObject) {
   }
   var value2 = document.querySelector('#'+selectObject.id);
   var index2 = value2.options[value2.selectedIndex].value;
-  sessionStorage.setItem("sistema_conectado_bd_mig", index2)
+  localStorage.setItem("sistema_conectado_bd_mig", index2)
 }
 
 
@@ -163,16 +185,12 @@ onload = function read_parm_instant_client_js() {
     }
   })
   //check flexSwitch_conectado_sqlite
-  if (sessionStorage.getItem("flexSwitch_conectado_sqlite") == "true") {
+  if (localStorage.getItem("flexSwitch_conectado_sqlite") == "true") {
     document.getElementById("flexSwitch_conectado_sqlite").checked = true
   }
   
   //check o status da conexao do SQLite
   sqlite_status_con_js()
-  //carrega a lista de Sistemas.
-  if(pathname == '/index.html'){
-  select_sqlite_sistemas_js();
-  }
   //carrega a lista de Modulos GS.
   select_sqlite_modulos_gs_js()
 
@@ -189,8 +207,8 @@ onload = function read_parm_instant_client_js() {
 }
 
 function clear_log_sistemas() {
-  sessionStorage.removeItem("sistema_conectado_bd_mig");
-  sessionStorage.removeItem("sistema_conectado_bd");
+  localStorage.removeItem("sistema_conectado_bd_mig");
+  localStorage.removeItem("sistema_conectado_bd");
 }
 
 function clear_row_sistemas() {
@@ -199,30 +217,24 @@ function clear_row_sistemas() {
 
 function ora_con_close_js(label, checkbox) {
   eel.ora_con_close()
-  sessionStorage.removeItem(checkbox);
+  localStorage.removeItem(checkbox);
   document.getElementById(checkbox).disabled = true
-  sessionStorage.setItem(label, "Desconectado")
+  localStorage.setItem(label, "Desconectado")
   document.getElementById(label).style = "color: red"
-  sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+  localStorage.setItem(label + "_color", document.getElementById(label).style.color)
   document.getElementById("button_con_ora").disabled = false
 }
 
 function pos_con_close_js(label, checkbox) {
   eel.pos_con_close()
-  sessionStorage.removeItem(checkbox);
+  localStorage.removeItem(checkbox);
   document.getElementById(checkbox).disabled = true
-  sessionStorage.setItem(label, "Desconectado")
+  localStorage.setItem(label, "Desconectado")
   document.getElementById(label).style = "color: red"
-  sessionStorage.setItem(label + "_color", document.getElementById(label).style.color)
+  localStorage.setItem(label + "_color", document.getElementById(label).style.color)
   document.getElementById("drop_generate_sistemas").disabled = false
   clear_log_sistemas()
   clear_row_sistemas()
-}
-
-
-
-function close_modal(modal_name) {
-  document.getElementById(modal_name).setAttribute("hidden", "true")
 }
 
 async function insert_tabelas_sqlite_logtec_js() {
@@ -249,7 +261,7 @@ async function select_sqlite_sistemas_js() {
     node.innerHTML = select.map(col => col[1])[i]
     node.id = select.map(col => col[2])[i]
     document.getElementById('drop_generate_sistemas').appendChild(node);
-    var index = sessionStorage.getItem("sistema_conectado_bd_mig")
+    var index = localStorage.getItem("sistema_conectado_bd_mig")
     jQuery("#drop_generate_sistemas option:selected").removeAttr("selected");
     jQuery("#drop_generate_sistemas option[value='"+index +"']").attr('selected', 'selected');  
 
@@ -373,11 +385,11 @@ function connect_sqlite_js() {
 }
 
 function ora_conectado_load_page() {
-  if (sessionStorage.getItem("ora_conectado") == "Desconectado") {
+  if (localStorage.getItem("ora_conectado") == "Desconectado") {
     document.getElementById("flexSwitch_conectado").checked = false
   }
-    if (sessionStorage.getItem("ora_conectado") == "Conectado") {
-    document.getElementById("ora_conectado").style = "color: " + sessionStorage.getItem("ora_conectado_color")
+    if (localStorage.getItem("ora_conectado") == "Conectado") {
+    document.getElementById("ora_conectado").style = "color: " + localStorage.getItem("ora_conectado_color")
     document.getElementById("flexSwitch_conectado").checked = true
     document.getElementById("flexSwitch_conectado").disabled = false
     document.getElementById("button_con_ora").disabled = true
@@ -385,11 +397,11 @@ function ora_conectado_load_page() {
 }
 
 function pos_conectado_load_page() {
-if (sessionStorage.getItem("sistema_conectado") == "Desconectado") {
+if (localStorage.getItem("sistema_conectado") == "Desconectado") {
   document.getElementById("flexSwitch_sistema_conectado").checked = false
 }
-if (sessionStorage.getItem("sistema_conectado") == "Conectado") {
-  document.getElementById("sistema_conectado").style = "color: " + sessionStorage.getItem("sistema_conectado_color")
+if (localStorage.getItem("sistema_conectado") == "Conectado") {
+  document.getElementById("sistema_conectado").style = "color: " + localStorage.getItem("sistema_conectado_color")
   document.getElementById("flexSwitch_sistema_conectado").checked = true
   document.getElementById("flexSwitch_sistema_conectado").disabled = false
   document.getElementById("drop_generate_sistemas").disabled = true 
@@ -554,9 +566,9 @@ function insert_sqlite_sistemas_tabela_gs_js() {
   var value = document.querySelector('#modulo_gs_ora_util');
   var index = value.options[value.selectedIndex].value;
   
-  if (document.getElementById('nome_tabela_sistema').value != "" && index != "" && $.isNumeric(sessionStorage.getItem('modulo_gs_id'))) {
+  if (document.getElementById('nome_tabela_sistema').value != "" && index != "" && $.isNumeric(localStorage.getItem('modulo_gs_id'))) {
     eel.insert_sqlite_sistemas_tabela_gs(document.getElementById('drop_generate_sistemas').value , document.getElementById('nome_tabela_sistema').value ,index )
-    select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem('sistema_migrado_id'))
+    select_sqlite_sistemas_tabela_gs_js(localStorage.getItem('sistema_migrado_id'))
   }
   else
     alert('Campo Sem valor')  
@@ -574,7 +586,7 @@ function sistema_migrado_id(selectObject) {
   var value = document.querySelector('#'+selectObject.id);
   var index = value.options[value.selectedIndex].value;
   select_sqlite_sistemas_tabela_gs_js(index)
-  sessionStorage.setItem('sistema_migrado_id', index);
+  localStorage.setItem('sistema_migrado_id', index);
 }
 
 function delete_sqlite_tabela_sistemas_gs_js() {
@@ -588,11 +600,11 @@ function delete_sqlite_tabela_sistemas_gs_js() {
     eel.delete_sqlite_tabela_sistemas_gs(checked[i],checked2[i])
   }
   console.log(checked)
-  select_sqlite_sistemas_tabela_gs_js(sessionStorage.getItem('sistema_migrado_id'))
+  select_sqlite_sistemas_tabela_gs_js(localStorage.getItem('sistema_migrado_id'))
 }
 
 function session_storage_modulo_gs(sel) {
-  sessionStorage.setItem('modulo_gs_id', sel.value);
+  localStorage.setItem('modulo_gs_id', sel.value);
 }
 
 function hidden_sistemas_config() {
@@ -600,7 +612,7 @@ function hidden_sistemas_config() {
 }
 
 async function select_all_tabelas_postgres_js() {
-  let select = await eel.select_sqlite_sistemas_tabela_gs(sessionStorage.getItem("sistema_conectado_bd_mig"))();
+  let select = await eel.select_sqlite_sistemas_tabela_gs(localStorage.getItem("sistema_conectado_bd_mig"))();
   var select1 = select.map(col => col[0])
   var select2 = select.map(col => col[1])
    for (i = 0; i < select2.length; i++) {
@@ -688,3 +700,24 @@ function drag_drop_input() {
     input.value = text
   })
 }
+
+// LOGTEC //
+async function logtec_unidade_medida_js() {
+  let select = await eel.logtec_un_medid()();
+  console.log(select)
+
+}
+
+// LOGTEC //
+async function migra_unidade_medida_js() {
+  let select = await eel.migra_unidade_medida()();
+  console.log(select)
+
+}
+
+window.addEventListener("session", function () {
+  if (localStorage.getItem('sistema_conectado_bd_mig') != null) {
+    console.log("localStorage changed!");
+  }
+  
+}, false);

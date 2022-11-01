@@ -5,8 +5,6 @@ import eel
 import json
 
   
-
-
 # Conectar ao Postgres
 @eel.expose
 def connect_postgres(host, database, port, user, password):
@@ -67,3 +65,15 @@ def select_generico(select):
 
 connect_postgres('localhost', 'BARATAO', 5432, 'postgres', '91396851')
 select_generico("select * from unidade_medida where cod_unidade = 'BJ'")
+
+
+
+
+#LOGTEC#
+def logtec_unidade_medida():
+    cur_pos = con_pos.cursor()
+    select = "select cod_unidade, des_unidade from unidade_medida"
+    cur_pos.execute(select)
+    dados = cur_pos.fetchall()
+    return dados
+#LOGTEC#
