@@ -19,7 +19,6 @@ from sqlalchemy import true
 import sistemas.firebird_test as firebird
 import sistemas.postgres as postgres
 
-
 # name of folder where the html, css, js, image files are located
 eel.init('templates')
 
@@ -323,6 +322,32 @@ def delete_sqlite_tabela_sistemas_gs(id_sistema,tabela):
     return(id_sistema,tabela)
 
 
+#LOGTEC#
+@eel.expose
+def logtec_un_medid():
+    postgres.logtec_unidade_medida();
+
+@eel.expose
+def migra_unidade_medida():
+    logtec = postgres.logtec_unidade_medida();
+    #logtec to pandas two columns
+    df = pd.DataFrame(logtec, columns=['cod_unidade', 'des_unidade'])
+    #get first column
+    df1 = df['cod_unidade']
+    #get second column
+    df2 = df['des_unidade']
+    print(df1)
+    print(df2)
+    #loop to insert from logtec to oracle
+    for i in range(len(df1)):
+        print(df1[i], df2[i])
+        cur = con.cursor()
+        cur.callproc('gondola.p_pymig.p_import_un_medid', [df1[i], df2[i]])
+        con.commit()
+    print("Cadastado com sucesso")
+#LOGTEC#
+
+#
 
 # 1000 is width of window and 600 is the height
 eel.start('index.html', mode='default', size=(1366, 768))
