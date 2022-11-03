@@ -7,43 +7,43 @@
   <link rel="shortcut icon" href="logo-senior-3.svg" type="image/x-icon">
   <link href="style.css" rel="stylesheet">
   <link href="hover.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/eel.js"></script>
-    <script type="text/javascript" src="main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-        crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/eel.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <!-- Nav Tab -->
-    <div class="mb-3">
+  <!-- Nav Tab -->
+  <div class="mb-3">
 
-    </div>
-    <div class="navbar nav nav-pills nav-fill border-2 shadow-sm  mb-3 bg-body py-2 container rounded-5 " >
+  </div>
+  <div class="navbar nav nav-pills nav-fill border-2 shadow-sm  mb-3 bg-body py-2 container rounded-5 ">
     <!-- Nav Tab -->
     <div class="container-fluid ">
-        <li class="hvr-grow-shadow rounded ">
-          <a class="nav-link bi link-success bi-info-circle px-5" aria-current="page" href="#"> Sobre</a>
-        </li>
-        <li class="hvr-grow-shadow rounded">
-          <a class="nav-link link-success bi bi-hdd-rack px-5" href="/index.html"> Migração</a>
-        </li>
-        <li class="hvr-grow-shadow rounded">
-          <a class="nav-link link-success bi bi-boxes px-5" id="utility_html" href="/utility.html"> Utilitários</a>
-        </li>
-        <li class="hvr-grow-shadow rounded">
-          <a class="nav-link link-success bi bi-gear px-5" href="/config.html"> Configurações</a>
-        </li>
-        <div> 
-          <div class="form-check form-switch px-5">
-            <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
-            <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
-          </div>
+      <li class="hvr-grow-shadow rounded ">
+        <a class="nav-link bi link-success bi-info-circle px-5" aria-current="page" href="#"> Sobre</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link link-success bi bi-hdd-rack px-5" href="/index.html"> Migração</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link link-success bi bi-boxes px-5" id="utility_html" href="/utility.html"> Utilitários</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link link-success bi bi-gear px-5" href="/config.html"> Configurações</a>
+      </li>
+      <div>
+        <div class="form-check form-switch px-5">
+          <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
+          <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
         </div>
+      </div>
     </div>
   </div>
 
@@ -82,203 +82,231 @@
                   <input class="form-check-input position-absolute"
                     onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" type="checkbox"
                     id="flexSwitch_sistema_conectado" disabled>
-                  <label class="form-check-label bi bi-ethernet" style="color:red"
-                    for="flexSwitch_sistema_conectado" id="sistema_conectado"></label>
+                  <label class="form-check-label bi bi-ethernet" style="color:red" for="flexSwitch_sistema_conectado"
+                    id="sistema_conectado"></label>
                 </div>
               </div>
-              
+
               <div class="col-3">
                 <div class="form-check form-switch p-3 position-relative">
-                  <select class="form-select rounded-5" onchange="session_storage_modulo_gs(this)" aria-label="Default select example" disabled id="modulo_gs_ora_util">
+                  <select class="form-select rounded-5" onchange="session_storage_modulo_gs_con_mod(this)"
+                    aria-label="Default select example" id="modulo_gs_ora_util">
                     <option selected>Selecione o Modulo do GS</option>
                   </select>
                 </div>
               </div>
+
+            </div>
+
+          </div>
+
+          
+                <div class="container px-0">
+                  <div class="row">
+                    <div class="col-9"><button type="button" class="btn btn-success rounded-5"
+                      onclick="select_all_tabelas_postgres_raw_js()">
+                      Testar
+                    </div>
+                  </div>
+                  <div class="row g-0 ">
+                    <div class="col-3 p-1 panel-resizable border rounded-5 bg-light" >
+                      <div class="tbodyDiv ">
+                      <table class="table text-start font-size-sm">
+                      <thead>
+                        <tr>
+                          <th>Tabelas</th>
+                        </tr>
+                      </thead>
+                      <tbody id="list_all_tables">
+
+                      </tbody class="sticky-top">
+                    </table>
+                  </div>
+                    </div>
+                    <div class="p-2 col">
+                      <textarea class="form-control rounded-5 bg-light" id="exampleFormControlTextarea1" rows="15"></textarea>
+                    </div>
+                  </div>
+                </div>
               
-            </div>
-  
-          </div>
-          <div class="col px-0 p-3">
-          <div class="p-3 border rounded-5 bg-light">
-            <div class="row align-items-center ">
-              
-            </div>
-          </div>
+        
         </div>
       </div>
     </div>
-    
-  </div>
-  <!-- Gutter principal -->
+    <!-- Gutter principal -->
 
-  <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <strong class="me-auto fs-3 bi bi-send-check" id="toast_origem">Bootstrap</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body fs-5" id="toast_message">
-        Hello, world! This is a toast message.
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <strong class="me-auto fs-3 bi bi-send-check" id="toast_origem">Bootstrap</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body fs-5" id="toast_message">
+          Hello, world! This is a toast message.
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Oracle Modal -->
-<div class="modal fade" id="staticoracle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-aria-labelledby="staticBackdropLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content rounded-5">
-    <div class="modal-header">
-      <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      <div class="mb-3"></div>
-      <div class="container-sm">
-        <div class="row">
-          <div class="col">
-            <input type="text" class="form-control rounded-5" id="oracle_user" placeholder="User" aria-label="First name">
+    <!-- Oracle Modal -->
+    <div class="modal fade" id="staticoracle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content rounded-5">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="col">
-            <input type="password" class="form-control rounded-5" id="oracle_password" placeholder="Password"
-              aria-label="Last name">
-          </div>
-        </div>
-        <div class="mb-3"></div>
-        <div class="mb-3">
-          <input type="text" class="form-control rounded-5" id="oracle_host" placeholder="Host" aria-label="First name">
-        </div>
-        <div class="row">
-          <div class="col">
-            <input type="number" class="form-control rounded-5" id="oracle_port" placeholder="Port" value="1521"
-              aria-label="First name">
-          </div>
-          <div class="col">
-            <input type="text" class="form-control rounded-5" id="oracle_sid" placeholder="SID/Service"
-              aria-label="First name">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <input type="button" class="btn btn-success rounded-5"
-        onclick="conn_oracle('ora_conectado','flexSwitch_conectado','ora_conectado_message')" value="Conectar">
-      <button type="button" class="btn btn-secondary rounded-5"
-        data-bs-dismiss="modal">Fechar</button>
-    </div>
-  </div>
-</div>
-</div>
-<!-- Oracle Modal -->
-
-  <!-- Postgress Modal -->
-  <div class="modal fade" id="staticpostgres" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content rounded-5">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão do Postgres</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3"></div>
-          <div class="container-sm">
-            <div class="row">
-              <div class="col">
-                <input type="text" class="form-control rounded-5" id="postgres_user" placeholder="Login" aria-label="Login">
-              </div>
-              <div class="col">
-                <input type="password" class="form-control rounded-5" id="postgres_password" placeholder="Password"
-                  aria-label="Password">
-              </div>
-            </div>
+          <div class="modal-body">
             <div class="mb-3"></div>
-            <div class="mb-3">
-              <input type="text" class="form-control rounded-5" id="postgres_host" placeholder="Host" aria-label="Host">
-            </div>
-            <div class="row">
-              <div class="col">
-                <input type="number" class="form-control rounded-5" id="postgres_port" placeholder="Port" value="5432"
-                  aria-label="Port">
+            <div class="container-sm">
+              <div class="row">
+                <div class="col">
+                  <input type="text" class="form-control rounded-5" id="oracle_user" placeholder="User"
+                    aria-label="First name">
+                </div>
+                <div class="col">
+                  <input type="password" class="form-control rounded-5" id="oracle_password" placeholder="Password"
+                    aria-label="Last name">
+                </div>
               </div>
-              <div class="col">
-                <input type="text" class="form-control rounded-5" id="postgres_database" placeholder="Database"
+              <div class="mb-3"></div>
+              <div class="mb-3">
+                <input type="text" class="form-control rounded-5" id="oracle_host" placeholder="Host"
+                  aria-label="First name">
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input type="number" class="form-control rounded-5" id="oracle_port" placeholder="Port" value="1521"
+                    aria-label="First name">
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control rounded-5" id="oracle_sid" placeholder="SID/Service"
+                    aria-label="First name">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-success rounded-5"
+              onclick="conn_oracle('ora_conectado','flexSwitch_conectado','ora_conectado_message')" value="Conectar">
+            <button type="button" class="btn btn-secondary rounded-5" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Oracle Modal -->
+
+    <!-- Postgress Modal -->
+    <div class="modal fade" id="staticpostgres" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content rounded-5">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão do Postgres</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3"></div>
+            <div class="container-sm">
+              <div class="row">
+                <div class="col">
+                  <input type="text" class="form-control rounded-5" id="postgres_user" placeholder="Login"
+                    aria-label="Login">
+                </div>
+                <div class="col">
+                  <input type="password" class="form-control rounded-5" id="postgres_password" placeholder="Password"
+                    aria-label="Password">
+                </div>
+              </div>
+              <div class="mb-3"></div>
+              <div class="mb-3">
+                <input type="text" class="form-control rounded-5" id="postgres_host" placeholder="Host"
+                  aria-label="Host">
+              </div>
+              <div class="row">
+                <div class="col">
+                  <input type="number" class="form-control rounded-5" id="postgres_port" placeholder="Port" value="5432"
+                    aria-label="Port">
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control rounded-5" id="postgres_database" placeholder="Database"
+                    aria-label="Database">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="random_number"></div>
+            <input type="button" class="btn btn-success rounded-5"
+              onclick="conn_postgres('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
+            <button type="button" class="btn btn-secondary rounded-5" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" id="show_postgres_modal" hidden="true" class="btn btn-success" data-bs-toggle="modal"
+      data-bs-target="#staticpostgres">
+      Conectar no Postgress
+    </button>
+    <!-- Postgress Modal -->
+
+    <!-- Firebird Modal -->
+    <div class="modal fade" id="staticfirebird" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content rounded-5">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão do Firebird</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3"></div>
+            <div class="container-sm">
+              <div class="row">
+                <div class="col">
+                  <input type="text" class="form-control rounded-5" id="firebird_user" placeholder="Login"
+                    aria-label="Login">
+                </div>
+                <div class="col">
+                  <input type="password" class="form-control rounded-5" id="firebird_password" placeholder="Password"
+                    aria-label="Password">
+                </div>
+              </div>
+              <div class="mb-3"></div>
+              <div class="mb-3">
+                <input type="text" class="form-control rounded-5" id="firebird_host" placeholder="Host"
+                  aria-label="Host">
+              </div>
+              <div class="mb-3">
+                <input type="text" class="form-control rounded-5" id="firebird_database" placeholder="Database"
                   aria-label="Database">
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="random_number"></div>
-          <input type="button" class="btn btn-success rounded-5"
-            onclick="conn_postgres('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
-          <button type="button" class="btn btn-secondary rounded-5" data-bs-dismiss="modal">Fechar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <button type="button" id="show_postgres_modal" hidden="true" class="btn btn-success" data-bs-toggle="modal"
-  data-bs-target="#staticpostgres">
-  Conectar no Postgress
-  </button>
-  <!-- Postgress Modal -->
-
-  <!-- Firebird Modal -->
-  <div class="modal fade" id="staticfirebird" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content rounded-5">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão do Firebird</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3"></div>
-          <div class="container-sm">
-            <div class="row">
-              <div class="col">
-                <input type="text" class="form-control rounded-5" id="firebird_user" placeholder="Login" aria-label="Login">
-              </div>
-              <div class="col">
-                <input type="password" class="form-control rounded-5" id="firebird_password" placeholder="Password"
-                  aria-label="Password">
-              </div>
-            </div>
-            <div class="mb-3"></div>
-            <div class="mb-3">
-              <input type="text" class="form-control rounded-5" id="firebird_host" placeholder="Host" aria-label="Host">
-            </div>
-            <div class="mb-3">
-              <input type="text" class="form-control rounded-5" id="firebird_database" placeholder="Database"
-                aria-label="Database">
-            </div>
-            <div class="row">
-              <div class="col">
-                <input type="number" class="form-control rounded-5" id="firebird_port" placeholder="Port" value="3050"
-                  aria-label="Port">
-              </div>
-              <div class="col">
-                <input type="text" class="form-control rounded-5" id="firebird_charset" placeholder="Charset" value="WIN1251"
-                aria-label="Charset">
+              <div class="row">
+                <div class="col">
+                  <input type="number" class="form-control rounded-5" id="firebird_port" placeholder="Port" value="3050"
+                    aria-label="Port">
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control rounded-5" id="firebird_charset" placeholder="Charset"
+                    value="WIN1251" aria-label="Charset">
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <div class="random_number"></div>
-          <input type="button" class="btn btn-success rounded-5"
-            onclick="conn_firebird('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
-          <button type="button" class="btn btn-secondary rounded-5" data-bs-dismiss="modal">Fechar</button>
+          <div class="modal-footer">
+            <div class="random_number"></div>
+            <input type="button" class="btn btn-success rounded-5"
+              onclick="conn_firebird('sistema_conectado','flexSwitch_sistema_conectado')" value="Conectar">
+            <button type="button" class="btn btn-secondary rounded-5" data-bs-dismiss="modal">Fechar</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <button type="button" id="show_firebird_modal" hidden="true" class="btn btn-success" data-bs-toggle="modal"
-  data-bs-target="#staticfirebird">
-  Conectar no Firebird
-  </button>
-  <!-- Firebird Modal -->
+    <button type="button" id="show_firebird_modal" hidden="true" class="btn btn-success" data-bs-toggle="modal"
+      data-bs-target="#staticfirebird">
+      Conectar no Firebird
+    </button>
+    <!-- Firebird Modal -->
 
 </body>
 

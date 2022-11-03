@@ -63,10 +63,15 @@ def select_generico(select):
     return colunas,dados,json_data
 
 
-connect_postgres('localhost', 'BARATAO', 5432, 'postgres', '91396851')
-select_generico("select * from unidade_medida where cod_unidade = 'BJ'")
-
-
+#SELECT_ALL_TABELAS_POSTGRES
+@eel.expose
+def select_all_tabelas_postgres_raw():
+    cur_pos = con_pos.cursor()
+    select = "SELECT table_name FROM information_schema.tables"
+    cur_pos.execute(select)
+    dados = cur_pos.fetchall()
+    print(dados)
+    return dados
 
 
 #LOGTEC#
@@ -77,3 +82,7 @@ def logtec_unidade_medida():
     dados = cur_pos.fetchall()
     return dados
 #LOGTEC#
+
+
+
+connect_postgres('localhost', 'BARATAO', '5432', 'postgres', '91396851')

@@ -1,3 +1,4 @@
+from concurrent.futures import thread
 from logging import exception
 from statistics import mode
 import cx_Oracle
@@ -12,7 +13,8 @@ import sqlite3
 import sys
 import os
 import configparser
-
+import threading
+import time
 from sqlalchemy import true
 
 # import python files
@@ -22,6 +24,9 @@ import sistemas.postgres as postgres
 # name of folder where the html, css, js, image files are located
 eel.init('templates')
 
+#CLEAR LOCAL STORAGE on end off aplicattion
+print('Limpando localStorage...')
+eel.clear_localStorage()
 
 # Conexao SQLITE3
 con_lite = sqlite3.connect("pymig.db")
@@ -89,7 +94,7 @@ def connect_oracle(ora_login, ora_password, ora_host, ora_port, ora_service):
     try:
         dsn_tns = cx_Oracle.makedsn(ora_host, ora_port, service_name=ora_service)
         global con
-        con = cx_Oracle.connect(user=ora_login, password=ora_password, dsn=dsn_tns)
+        con = cx_Oracle.connect(user=ora_login, password=ora_password, dsn=dsn_tns, threaded=True)
         print(con.version)
         ora_conectado = ("Oracle Conectado", True)
         print(ora_conectado)
@@ -328,26 +333,23 @@ def logtec_un_medid():
     postgres.logtec_unidade_medida();
 
 @eel.expose
-def migra_unidade_medida():
+def migra_unidade_medida(modulo):
+    sql = ("select nome_procedure from modulos_gs where id_modulo = ?")
+    cur_lite.execute(sql, (modulo,))
+    row = cur_lite.fetchone()
+    row = row[0]
     logtec = postgres.logtec_unidade_medida();
-    #logtec to pandas two columns
-    df = pd.DataFrame(logtec, columns=['cod_unidade', 'des_unidade'])
-    #get first column
-    df1 = df['cod_unidade']
-    #get second column
-    df2 = df['des_unidade']
-    print(df1)
-    print(df2)
-    #loop to insert from logtec to oracle
-    for i in range(len(df1)):
-        print(df1[i], df2[i])
-        cur = con.cursor()
-        cur.callproc('gondola.p_pymig.p_import_un_medid', [df1[i], df2[i]])
-        con.commit()
-    print("Cadastado com sucesso")
-#LOGTEC#
+    df = pd.DataFrame(logtec)
+    qtd_rows = range(len(df))
+    print(qtd_rows)
+    for i in qtd_rows:
+        cur_ora = con.cursor()
+        print(df.values[i])
+        cur_ora.callproc(row, df.values[i])
 
-#
+
+
+connect_oracle('gondola', 'tgo12m50k', '10.0.120.238', 1521, 'migs01')
 
 # 1000 is width of window and 600 is the height
 eel.start('index.html', mode='default', size=(1366, 768))

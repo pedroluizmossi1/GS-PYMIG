@@ -48,7 +48,7 @@ body {
   }
 
   *::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: #ffffff00;
   }
 
   *::-webkit-scrollbar-thumb {
@@ -58,5 +58,11 @@ body {
   }
   ::-webkit-scrollbar-track {
     border-radius: 10px;
-    background-color: #82828200;
+    background-color: #ffffff00;
   }
+
+
+  .panel-resizable {
+    resize: both;
+    overflow: auto;
+}

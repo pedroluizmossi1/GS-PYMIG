@@ -1,8 +1,8 @@
-//Limpar o localStorage ao iniciar
+eel.expose(clear_localStorage);
 function clear_localStorage() {
     localStorage.clear();
+    location.reload();
 }
-
 
 $(document).ready(function(){
   var pathname = window.location.pathname;
@@ -20,17 +20,7 @@ $(document).ready(function(){
     localStorage.removeItem('sistema_migrado_id');
     localStorage.removeItem('modulos_gs_id');
     select_sqlite_sistemas_tabela_gs_js(localStorage.getItem("sistema_conectado_bd_mig"))
-    
-
-    $('#div-1').click(function () {
-  
-      // Load the exertnal html
-      // here this refers to 
-      // current selector
-      $(this).load('div-1.html');
-
       
-  });
 });
 
 
@@ -688,19 +678,6 @@ async function select_generico_js() {
       document.getElementById('table_select2').appendChild(table)
 }
 
-//drag and drop value inside input box
-function drag_drop_input() {
-  var input = document.getElementById('select_text')
-  input.addEventListener('dragover', function (event) {
-    event.preventDefault()
-  })
-  input.addEventListener('drop', function (event) {
-    event.preventDefault()
-    var text = event.dataTransfer.getData('text')
-    input.value = text
-  })
-}
-
 // LOGTEC //
 async function logtec_unidade_medida_js() {
   let select = await eel.logtec_un_medid()();
@@ -709,8 +686,8 @@ async function logtec_unidade_medida_js() {
 }
 
 // LOGTEC //
-async function migra_unidade_medida_js() {
-  let select = await eel.migra_unidade_medida()();
+async function migra_unidade_medida_js(modulo) {
+  let select = await eel.migra_unidade_medida(modulo)();
   console.log(select)
 
 }
@@ -721,3 +698,60 @@ window.addEventListener("session", function () {
   }
   
 }, false);
+
+function session_storage_modulo_gs_con_mod(sel) {
+  localStorage.setItem('modulo_gs_id', sel.value);
+  
+}
+
+
+async function select_all_tabelas_postgres_raw_js() {
+  let select = await eel.select_all_tabelas_postgres_raw()();
+  //save select into IndexedDB 
+  const request = window.indexedDB.open("POSTGRES", 1);
+  request.onupgradeneeded = (event) => {
+    const db = event.target.result;
+    const objectStore = db.createObjectStore("tabelas", { keyPath: "id", autoIncrement: true  });
+
+    request.onsuccess = (e) => {
+      // Create DB connection
+      const transaction = db.transaction('tabelas', 'readwrite');
+
+      transaction.oncomplete = function(event) {
+        console.log('All done!');
+    };
+
+    transaction.onerror = function(event) {
+        console.log('Transaction not opened due to error: ' + transaction.error);
+    };
+
+    const objectStore = transaction.objectStore('tabelas');
+    for (let i = 0; i < select.length; i++) {
+      objectStore.add(select[i]);
+    }
+
+    values_db = db.transaction('tabelas').objectStore('tabelas').getAll();
+    values_db.onsuccess = function(event) {
+      console.log(values_db.result.length);
+     for (let i = 0; i < values_db.result.length; i++) {
+      table = document.getElementById('list_all_tables')
+      //create table rows 
+      var tr = document.createElement('tr')
+      var td = document.createElement('td')
+      
+      td.innerHTML = values_db.result[i]
+      tr.appendChild(td)
+      table.appendChild(tr)
+
+      console.log(values_db.result[i])
+        }
+    };
+    
+
+
+  };
+  };
+
+}
+
+
