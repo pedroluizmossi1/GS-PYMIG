@@ -1,8 +1,4 @@
-eel.expose(clear_localStorage);
-function clear_localStorage() {
-    localStorage.clear();
-    location.reload();
-}
+
 
 $(document).ready(function(){
   var pathname = window.location.pathname;
@@ -15,8 +11,11 @@ $(document).ready(function(){
       select_sqlite_modulos_gs_drop_js();
       if (localStorage.getItem("flexSwitch_conectado") == 'true' && localStorage.getItem("flexSwitch_sistema_conectado") == 'true') {
         document.getElementById("modulo_gs_ora_util").disabled = false
+        create_rows_to_table_from_nav_db()
       }
+
       }
+    
     localStorage.removeItem('sistema_migrado_id');
     localStorage.removeItem('modulos_gs_id');
     select_sqlite_sistemas_tabela_gs_js(localStorage.getItem("sistema_conectado_bd_mig"))
@@ -101,9 +100,7 @@ function conn_firebird(label, checkbox) {
     document.getElementById(checkbox).disabled = false;
     document.getElementById(label).style = "color: green"
     localStorage.setItem(label + "_color", document.getElementById(label).style.color)
-    localStorage.setItem("sistema_conectado", "FIREBIRD")
-
-    alert(firebird_file)
+    localStorage.setItem("sistema_conectado_bd", "FIREBIRD")
   })
 }
 
@@ -184,7 +181,7 @@ onload = function read_parm_instant_client_js() {
   //carrega a lista de Modulos GS.
   select_sqlite_modulos_gs_js()
 
-  if(pathname == '/utility.html'){
+  if(pathname == '/utility.html' || pathname == '/about.html'){
   }
   else{
     eel.read_parm_ora_con()(function (read_value) {
@@ -205,7 +202,7 @@ function clear_row_sistemas() {
   $("#table_sistemas_gs_util_body").find('tbody').empty();
 }
 
-function ora_con_close_js(label, checkbox) {
+function ora_con_close_js(label, checkbox,sistema_bd) {
   eel.ora_con_close()
   localStorage.removeItem(checkbox);
   document.getElementById(checkbox).disabled = true
@@ -215,8 +212,11 @@ function ora_con_close_js(label, checkbox) {
   document.getElementById("button_con_ora").disabled = false
 }
 
-function pos_con_close_js(label, checkbox) {
-  eel.pos_con_close()
+function con_close_js(label, checkbox) {
+  eel.con_close(localStorage.getItem("sistema_conectado_bd"))(function (close) {
+    show_toast("Banco de Dados",close)
+  })
+  console.log(label, checkbox)
   localStorage.removeItem(checkbox);
   document.getElementById(checkbox).disabled = true
   localStorage.setItem(label, "Desconectado")
@@ -225,6 +225,7 @@ function pos_con_close_js(label, checkbox) {
   document.getElementById("drop_generate_sistemas").disabled = false
   clear_log_sistemas()
   clear_row_sistemas()
+  indexedDB.deleteDatabase('NAV_DB')
 }
 
 async function insert_tabelas_sqlite_logtec_js() {
@@ -336,12 +337,10 @@ setInterval(function () {
 async function sqlite_status_con_js(){
   let select = await eel.sqlite_status_con()();
 if ( select == 0) {
-  document.getElementById('sqlite_status').innerHTML = 'Conectado'
   document.getElementById('sqlite_status').style.color = 'green'
   document.getElementById('flexSwitch_conectado_sqlite').checked = true
 }
 else {
-  document.getElementById('sqlite_status').innerHTML = 'Desconectado'
   document.getElementById('sqlite_status').style.color = 'red'
   document.getElementById('flexSwitch_conectado_sqlite').checked = false
 }
@@ -705,10 +704,17 @@ function session_storage_modulo_gs_con_mod(sel) {
 }
 
 
-async function select_all_tabelas_postgres_raw_js() {
-  let select = await eel.select_all_tabelas_postgres_raw()();
-  //save select into IndexedDB 
-  const request = window.indexedDB.open("POSTGRES", 1);
+
+async function select_all_tabelas_sistemas(tipo_bd) {
+  if (tipo_bd == 'POSTGRES') {
+      let select = await eel.select_all_tabelas_postgres_raw()();
+      return select
+  }
+}
+
+async function insert_all_tables_in_nav_bd(event) {
+  let select = await event
+  const request = window.indexedDB.open("NAV_DB", 1);
   request.onupgradeneeded = (event) => {
     const db = event.target.result;
     const objectStore = db.createObjectStore("tabelas", { keyPath: "id", autoIncrement: true  });
@@ -728,30 +734,57 @@ async function select_all_tabelas_postgres_raw_js() {
     const objectStore = transaction.objectStore('tabelas');
     for (let i = 0; i < select.length; i++) {
       objectStore.add(select[i]);
-    }
-
-    values_db = db.transaction('tabelas').objectStore('tabelas').getAll();
-    values_db.onsuccess = function(event) {
-      console.log(values_db.result.length);
-     for (let i = 0; i < values_db.result.length; i++) {
       table = document.getElementById('list_all_tables')
-      //create table rows 
-      var tr = document.createElement('tr')
-      var td = document.createElement('td')
-      
-      td.innerHTML = values_db.result[i]
-      tr.appendChild(td)
-      table.appendChild(tr)
-
-      console.log(values_db.result[i])
-        }
-    };
+          //create table rows 
+          var tr = document.createElement('tr')
+          var td = document.createElement('td')
+          td.innerHTML = select[i]
+          tr.appendChild(td)
+          table.appendChild(tr)
+    }
     
-
-
   };
   };
-
 }
 
+async function create_rows_to_table_from_nav_db() {
+  const request = window.indexedDB.open("NAV_DB", 1);
+  request.onsuccess = (e) => {
+    const db = e.target.result;
+    const transaction = db.transaction('tabelas', 'readwrite');
+    const objectStore = transaction.objectStore('tabelas');
+    const request = objectStore.getAll();
+    request.onsuccess = (e) => {
+      const data = e.target.result;
+      for (let i = 0; i < data.length; i++) {
+        table = document.getElementById('list_all_tables')
+        //create table rows 
+        var tr = document.createElement('tr')
+        var td = document.createElement('td')
+        td.innerHTML = data[i]
+        tr.appendChild(td)
+        table.appendChild(tr)
+      }
+    };
+  };
+}
+
+function onchange_select_modulo(sel) {
+  session_storage_modulo_gs(sel)
+  insert_all_tables_in_nav_bd(select_all_tabelas_sistemas(localStorage.getItem('sistema_conectado_bd')))
+}
+
+eel.expose(clear_localStorage)
+function clear_localStorage() {
+    if (localStorage.getItem('numero_inicilizacoes') == 1) {
+      localStorage.clear();
+      console.log("LocalStorage cleared")
+      localStorage.setItem('numero_inicilizacoes', 2)
+    }  
+  }
+
+eel.expose(numero_inicilizacoes)
+function numero_inicilizacoes(){
+  localStorage.setItem('numero_inicilizacoes', 1)
+}
 

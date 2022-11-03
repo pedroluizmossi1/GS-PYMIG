@@ -27,10 +27,13 @@
     <!-- Nav Tab -->
     <div class="container-fluid ">
       <li class="hvr-grow-shadow rounded ">
-        <a class="nav-link bi link-success bi-info-circle px-5" aria-current="page" href="#"> Sobre</a>
+        <a class="nav-link bi link-success bi-info-circle px-5" aria-current="page" href="/about.html"> Sobre</a>
       </li>
       <li class="hvr-grow-shadow rounded">
         <a class="nav-link link-success bi bi-hdd-rack px-5" href="/index.html"> Migração</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link link-success bi bi-terminal px-5" href="/config_modulos.html"> Modulos</a>
       </li>
       <li class="hvr-grow-shadow rounded">
         <a class="nav-link link-success bi bi-boxes px-5" id="utility_html" href="/utility.html"> Utilitários</a>
@@ -41,7 +44,7 @@
       <div>
         <div class="form-check form-switch px-5">
           <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
-          <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
+          <label class="form-check-label bi bi-ethernet" for="flexSwitch_conectado_sqlite" id="sqlite_status"></label>
         </div>
       </div>
     </div>
@@ -80,7 +83,7 @@
               <div class="col">
                 <div class="form-check form-switch p-3 position-relative">
                   <input class="form-check-input position-absolute"
-                    onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" type="checkbox"
+                    onclick="con_close_js('sistema_conectado','flexSwitch_sistema_conectado','sistema_conectado_bd')" type="checkbox"
                     id="flexSwitch_sistema_conectado" disabled>
                   <label class="form-check-label bi bi-ethernet" style="color:red" for="flexSwitch_sistema_conectado"
                     id="sistema_conectado"></label>
@@ -89,7 +92,7 @@
 
               <div class="col-3">
                 <div class="form-check form-switch p-3 position-relative">
-                  <select class="form-select rounded-5" onchange="session_storage_modulo_gs_con_mod(this)"
+                  <select class="form-select rounded-5" onchange="onchange_select_modulo(this)"
                     aria-label="Default select example" id="modulo_gs_ora_util">
                     <option selected>Selecione o Modulo do GS</option>
                   </select>
@@ -101,12 +104,9 @@
           </div>
 
           
-                <div class="container px-0">
+                <div class="container px-0 p-3">
                   <div class="row">
-                    <div class="col-9"><button type="button" class="btn btn-success rounded-5"
-                      onclick="select_all_tabelas_postgres_raw_js()">
-                      Testar
-                    </div>
+                    
                   </div>
                   <div class="row g-0 ">
                     <div class="col-3 p-1 panel-resizable border rounded-5 bg-light" >
@@ -119,16 +119,32 @@
                       </thead>
                       <tbody id="list_all_tables">
 
-                      </tbody class="sticky-top">
+                      </tbody class="sticky-top font-size-sm">
                     </table>
                   </div>
                     </div>
                     <div class="p-2 col">
-                      <textarea class="form-control rounded-5 bg-light" id="exampleFormControlTextarea1" rows="15"></textarea>
+                      <div class="col-10">
+                        <div class="mb-3">
+                          <textarea class="form-control rounded-5 font-size-sm" id="select_text" rows="6"></textarea>
+                      </div>
+                      <div class="col-auto p-1 border rounded-5 bg-light tbodyDiv" >
+                      <div id="select_table font-size-sm">
+                          <table class="table text-center" id="table_select2">
+                          </table>
+      
+                      </div>
+                    </div>
+                      <div class="modal-body">
+                          <button type="button" class="btn btn-primary rounded-5" onclick="select_generico_js()">Teste</button>
+                      </div>
+                      <div class="modal-body">
+                        <button type="button" class="btn btn-primary rounded-5" onclick="open_nav_db()">Teste2</button>
+                    </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              
         
         </div>
       </div>

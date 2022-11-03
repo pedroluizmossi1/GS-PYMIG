@@ -6,14 +6,19 @@ import firebirdsql
 # abertura da conexao FIREBIRD
 def connect_firebird(host, database, port, user, password, charset):
     global con_fire
-    con_fire = firebirdsql.connect(
-    host = host,
-    database = database,
-    port = port,
-    user = user,
-    password = password,
-    charset = charset)
-    print('Firebird conectado')
+    try:
+        con_fire = firebirdsql.connect(
+        host = host,
+        database = database,
+        port = port,
+        user = user,
+        password = password,
+        charset = charset)
+        print('Firebird conectado')
+        return ("Postgres conectado", True)
+    except:
+        print('Erro ao conectar no Postgres')
+        return ("Erro ao conectar no Postgres", False)
 # abertura da conexao FIREBIRD
 
 # Fechar conexao FIREBIRD

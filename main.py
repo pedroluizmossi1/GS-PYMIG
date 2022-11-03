@@ -16,17 +16,15 @@ import configparser
 import threading
 import time
 from sqlalchemy import true
+import signal
+import atexit
 
 # import python files
-import sistemas.firebird_test as firebird
+import sistemas.firebird as firebird
 import sistemas.postgres as postgres
 
 # name of folder where the html, css, js, image files are located
 eel.init('templates')
-
-#CLEAR LOCAL STORAGE on end off aplicattion
-print('Limpando localStorage...')
-eel.clear_localStorage()
 
 # Conexao SQLITE3
 con_lite = sqlite3.connect("pymig.db")
@@ -115,8 +113,16 @@ def ora_con_close():
 
 # Encerramento da Conexao POSTGRES
 @eel.expose
-def pos_con_close():
-    postgres.pos_con_close()
+def con_close(sistema_bd):
+    if sistema_bd == 'POSTGRES':
+        postgres.pos_con_close()
+        return 'Conexao Postgres Fechada'
+    elif sistema_bd == 'FIREBIRD':
+        firebird.fire_con_close()
+        return 'Conexao Firebird Fechada'
+    else:
+        print('Sistema de Banco de Dados nao identificado')
+    
 # Encerramento da Conexao POSTGRES
 
 # Select em todas tabelas
@@ -130,12 +136,6 @@ def insert_tabelas_sqlite_logtec():
 def connect_firebird(host, database, port, user, password, charset):
     firebird.connect_firebird(host, database, port, user, password, charset)
 # Abertura da Conexao FIREBIRD
-
-# Encerramento da Conexao FIREBIRD
-@eel.expose
-def fire_con_close():
-    firebird.fire_con_close()
-# Encerramento da Conexao FIREBIRD
 
 
 
@@ -348,10 +348,10 @@ def migra_unidade_medida(modulo):
         cur_ora.callproc(row, df.values[i])
 
 
-
+eel.numero_inicilizacoes()
+eel.clear_localStorage()
 connect_oracle('gondola', 'tgo12m50k', '10.0.120.238', 1521, 'migs01')
 
-# 1000 is width of window and 600 is the height
 eel.start('index.html', mode='default', size=(1366, 768))
 
 

@@ -23,29 +23,32 @@
     <div class="mb-3">
 
     </div>
-    <div class="navbar nav nav-pills nav-fill border-2 shadow-sm  mb-3 bg-body py-2 container rounded-5 " >
-    <!-- Nav Tab -->
-    <div class="container-fluid ">
-        <li class="hvr-grow-shadow rounded ">
-          <a class="nav-link bi link-success bi-info-circle px-5" aria-current="page" href="#"> Sobre</a>
-        </li>
-        <li class="hvr-grow-shadow rounded">
-          <a class="nav-link link-success bi bi-hdd-rack px-5" href="/index.html"> Migração</a>
-        </li>
-        <li class="hvr-grow-shadow rounded">
-          <a class="nav-link link-success bi bi-boxes px-5" id="utility_html" href="/utility.html"> Utilitários</a>
-        </li>
-        <li class="hvr-grow-shadow rounded">
-          <a class="nav-link link-success bi bi-gear px-5" href="/config.html"> Configurações</a>
-        </li>
-        <div> 
-          <div class="form-check form-switch px-5">
-            <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
-            <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
+    <div class="navbar nav nav-pills nav-fill border-2 shadow-sm  mb-3 bg-body py-2 container rounded-5 ">
+        <!-- Nav Tab -->
+        <div class="container-fluid ">
+          <li class="hvr-grow-shadow rounded ">
+            <a class="nav-link bi link-success bi-info-circle px-5" aria-current="page" href="/about.html"> Sobre</a>
+          </li>
+          <li class="hvr-grow-shadow rounded">
+            <a class="nav-link link-success bi bi-hdd-rack px-5" href="/index.html"> Migração</a>
+          </li>
+          <li class="hvr-grow-shadow rounded">
+            <a class="nav-link link-success bi bi-terminal px-5" href="/config_modulos.html"> Modulos</a>
+          </li>
+          <li class="hvr-grow-shadow rounded">
+            <a class="nav-link link-success bi bi-boxes px-5" id="utility_html" href="/utility.html"> Utilitários</a>
+          </li>
+          <li class="hvr-grow-shadow rounded">
+            <a class="nav-link link-success bi bi-gear px-5" href="/config.html"> Configurações</a>
+          </li>
+          <div>
+            <div class="form-check form-switch px-5">
+              <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
+              <label class="form-check-label bi bi-ethernet" for="flexSwitch_conectado_sqlite" id="sqlite_status"></label>
+            </div>
           </div>
         </div>
-    </div>
-  </div>
+      </div>
     <!-- Nav Tab -->
 
     <!-- Gutter principal -->
@@ -83,15 +86,7 @@
                             </button>
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-success rounded-5" data-bs-toggle="modal"
-                                        data-bs-target="#stati_config_modulos">
-                                        Configurar Modulos por Sistema
-                            </button>
-                            <div class="col p-3 ">
-                                <button type="button" class="btn btn-success rounded-5" onclick="location.href='/config_modulos.html'">
-                                    Configurar Modulos por Sistema
-                                </button>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -195,41 +190,6 @@
     </div>
     </div>
     <!-- Insert tables Modal -->
-
-    <!-- Configurar Modulos Sistemas Modal -->
-    <div class="modal fade" id="stati_config_modulos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content rounded-5">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Inserir um Novo Modulo a Ser Migrado</h5>
-                    <button type="button" class="btn-close" onclick="deletetable()" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="mb-3">
-                    <label for="select_text" class="form-label ">Código da Procedure</label>
-                    <textarea class="form-control rounded-5" id="select_text" rows="6"></textarea>
-                </div>
-                <div id="select_table">
-                    <table class="table text-center" id="table_select2">
-                    </table>
-
-                </div>
-                <div class="modal-body">
-                    <button type="button" class="btn btn-primary rounded-5" onclick="select_generico_js()">Teste</button>
-                </div>
-                <div class="modal-footer" id="drop_generate">
-                    <input type="button" id="insert_sqlite_modules_button" class="btn btn-success rounded-5"
-                        onclick="insert_sqlite_modulos_gs_js()" value="Inserir">
-                    <button type="button" class="btn btn-secondary rounded-5" onclick="deletetable()"
-                        data-bs-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    <!-- Configurar modulos sistemas Modal -->
-
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">

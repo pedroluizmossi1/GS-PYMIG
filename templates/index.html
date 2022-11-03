@@ -12,35 +12,40 @@
     integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script type="text/javascript" src="/eel.js"></script>
-  <script type="text/javascript" src="main.js"></script> 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"  crossorigin="anonymous"></script>
+  <script type="text/javascript" src="main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
   <div class="mb-3">
 
   </div>
-  <div class="navbar nav nav-pills nav-fill border-2 shadow-sm  mb-3 bg-body py-2 container rounded-5 " >
+  <div class="navbar nav nav-pills nav-fill border-2 shadow-sm  mb-3 bg-body py-2 container rounded-5 ">
     <!-- Nav Tab -->
     <div class="container-fluid ">
-        <li class="hvr-grow-shadow rounded ">
-          <a class="nav-link bi link-success bi-info-circle px-5" aria-current="page" href="#"> Sobre</a>
-        </li>
-        <li class="hvr-grow-shadow rounded">
-          <a class="nav-link link-success bi bi-hdd-rack px-5" href="/index.html"> Migração</a>
-        </li>
-        <li class="hvr-grow-shadow rounded">
-          <a class="nav-link link-success bi bi-boxes px-5" id="utility_html" href="/utility.html"> Utilitários</a>
-        </li>
-        <li class="hvr-grow-shadow rounded">
-          <a class="nav-link link-success bi bi-gear px-5" href="/config.html"> Configurações</a>
-        </li>
-        <div> 
-          <div class="form-check form-switch px-5">
-            <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
-            <label class="form-check-label" for="flexSwitch_conectado_sqlite" id="sqlite_status">Desconectado</label>
-          </div>
+      <li class="hvr-grow-shadow rounded ">
+        <a class="nav-link bi link-success bi-info-circle px-5" aria-current="page" href="/about.html"> Sobre</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link link-success bi bi-hdd-rack px-5" href="/index.html"> Migração</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link link-success bi bi-terminal px-5" href="/config_modulos.html"> Modulos</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link link-success bi bi-boxes px-5" id="utility_html" href="/utility.html"> Utilitários</a>
+      </li>
+      <li class="hvr-grow-shadow rounded">
+        <a class="nav-link link-success bi bi-gear px-5" href="/config.html"> Configurações</a>
+      </li>
+      <div>
+        <div class="form-check form-switch px-5">
+          <input class="form-check-input" type="checkbox" id="flexSwitch_conectado_sqlite" disabled>
+          <label class="form-check-label bi bi-ethernet" for="flexSwitch_conectado_sqlite" id="sqlite_status"></label>
         </div>
+      </div>
     </div>
   </div>
   <!-- Nav Tab -->
@@ -86,10 +91,10 @@
                 <button type="button" onclick="ora_mod_select_js()" class="btn btn-success rounded-5">Validar</button>
               </div>
             </div>
-  
+
           </div>
         </div>
-        
+
         <div class="col px-3">
           <div class="col px-0">
             <div class="p-3 border rounded-5 bg-light">
@@ -103,38 +108,39 @@
                 <div class="col">
                   <div class="form-check form-switch p-3 position-relative">
                     <input class="form-check-input position-absolute"
-                      onclick="pos_con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" type="checkbox"
+                      onclick="con_close_js('sistema_conectado','flexSwitch_sistema_conectado')" type="checkbox"
                       id="flexSwitch_sistema_conectado" disabled>
-                    <label class="form-check-label bi bi-ethernet" style="color:red"
-                      for="flexSwitch_sistema_conectado" id="sistema_conectado"></label>
+                    <label class="form-check-label bi bi-ethernet" style="color:red" for="flexSwitch_sistema_conectado"
+                      id="sistema_conectado"></label>
                   </div>
                 </div>
                 <div class="p-3 border rounded-5 bg-light">
-                <div class="tbodyDiv px-3">
-                  <table class="table" id="table_sistemas_gs_util_body">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Tabela</th>
-                        <th scope="col">Módulo</th>
-                        <th scope="col">Válido?</th>
-                      </tr>
-                    </thead>
-                    <tbody class="sticky-top">
-                      <tr>
-                      </tr>
-                    </tbody>
-                  </table>
-                  
-                  <button type="button" onclick="select_all_tabelas_postgres_js()" class="btn btn-success rounded-5">Validar Tabelas</button>
-                </div>
+                  <div class="tbodyDiv px-3">
+                    <table class="table" id="table_sistemas_gs_util_body">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Tabela</th>
+                          <th scope="col">Módulo</th>
+                          <th scope="col">Válido?</th>
+                        </tr>
+                      </thead>
+                      <tbody class="sticky-top">
+                        <tr>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <button type="button" onclick="select_all_tabelas_postgres_js()"
+                      class="btn btn-success rounded-5">Validar Tabelas</button>
+                  </div>
                 </div>
               </div>
-    
+
             </div>
           </div>
         </div>
-            
+
         <div class="col px-0">
           <div class="col px-0">
             <div class="p-3 border rounded-5 bg-light">
@@ -152,10 +158,11 @@
                       </tr>
                     </tbody>
                   </table>
-                  <button type="button" id="teste05" onclick="migra_unidade_medida_js(1)" class="btn btn-success rounded-5">Migrar UNIDADES</button>
+                  <button type="button" id="teste05" onclick="migra_unidade_medida_js(1)"
+                    class="btn btn-success rounded-5">Migrar UNIDADES</button>
                 </div>
               </div>
-    
+
             </div>
           </div>
         </div>
@@ -171,15 +178,15 @@
       <div class="modal-content rounded-5">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Configurações de Conexão</h5>
-          <button type="button" class="btn-close"  data-bs-dismiss="modal"
-            aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3"></div>
           <div class="container-sm">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control rounded-5" id="oracle_user" placeholder="User" aria-label="First name">
+                <input type="text" class="form-control rounded-5" id="oracle_user" placeholder="User"
+                  aria-label="First name">
               </div>
               <div class="col">
                 <input type="password" class="form-control rounded-5" id="oracle_password" placeholder="Password"
@@ -188,7 +195,8 @@
             </div>
             <div class="mb-3"></div>
             <div class="mb-3">
-              <input type="text" class="form-control rounded-5" id="oracle_host" placeholder="Host" aria-label="First name">
+              <input type="text" class="form-control rounded-5" id="oracle_host" placeholder="Host"
+                aria-label="First name">
             </div>
             <div class="row">
               <div class="col">
@@ -205,8 +213,7 @@
         <div class="modal-footer">
           <input type="button" class="btn btn-success rounded-5"
             onclick="conn_oracle('ora_conectado','flexSwitch_conectado','ora_conectado_message')" value="Conectar">
-          <button type="button" class="btn btn-secondary rounded-5" 
-            data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-secondary rounded-5" data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>
     </div>
@@ -215,7 +222,7 @@
 
   <!-- Postgress Modal -->
   <div class="modal fade" id="staticpostgres" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content rounded-5">
         <div class="modal-header">
@@ -227,7 +234,8 @@
           <div class="container-sm">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control rounded-5" id="postgres_user" placeholder="Login" aria-label="Login">
+                <input type="text" class="form-control rounded-5" id="postgres_user" placeholder="Login"
+                  aria-label="Login">
               </div>
               <div class="col">
                 <input type="password" class="form-control rounded-5" id="postgres_password" placeholder="Password"
@@ -260,8 +268,8 @@
     </div>
   </div>
   <button type="button" id="show_postgres_modal" hidden="true" class="btn btn-success" data-bs-toggle="modal"
-  data-bs-target="#staticpostgres">
-  Conectar no Postgress
+    data-bs-target="#staticpostgres">
+    Conectar no Postgress
   </button>
   <!-- Postgress Modal -->
 
@@ -279,7 +287,8 @@
           <div class="container-sm">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control rounded-5" id="firebird_user" placeholder="Login" aria-label="Login">
+                <input type="text" class="form-control rounded-5" id="firebird_user" placeholder="Login"
+                  aria-label="Login">
               </div>
               <div class="col">
                 <input type="password" class="form-control rounded-5" id="firebird_password" placeholder="Password"
@@ -300,8 +309,8 @@
                   aria-label="Port">
               </div>
               <div class="col">
-                <input type="text" class="form-control rounded-5" id="firebird_charset" placeholder="Charset" value="WIN1251"
-                aria-label="Charset">
+                <input type="text" class="form-control rounded-5" id="firebird_charset" placeholder="Charset"
+                  value="WIN1251" aria-label="Charset">
               </div>
             </div>
           </div>
@@ -316,8 +325,8 @@
     </div>
   </div>
   <button type="button" id="show_firebird_modal" hidden="true" class="btn btn-success" data-bs-toggle="modal"
-  data-bs-target="#staticfirebird">
-  Conectar no Firebird
+    data-bs-target="#staticfirebird">
+    Conectar no Firebird
   </button>
   <!-- Firebird Modal -->
 
