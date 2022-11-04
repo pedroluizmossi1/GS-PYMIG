@@ -348,7 +348,6 @@ def migra_unidade_medida(modulo):
         cur_ora.callproc(row, df.values[i])
 
 
-eel.numero_inicilizacoes()
 eel.clear_localStorage()
 connect_oracle('gondola', 'tgo12m50k', '10.0.120.238', 1521, 'migs01')
 
